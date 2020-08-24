@@ -1,2 +1,3 @@
+include ':glance'
 include ':app'
 rootProject.name = "Glance"

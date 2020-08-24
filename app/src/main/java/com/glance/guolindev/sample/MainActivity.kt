@@ -1,4 +1,4 @@
-package com.glance.guolindev
+package com.glance.guolindev.sample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

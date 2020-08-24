@@ -1,4 +1,4 @@
-package com.glance.guolindev
+package com.glance.sample
 
 import org.junit.Test
 

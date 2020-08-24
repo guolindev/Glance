@@ -14,31 +14,26 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev
+package com.glance.guolindev.initializer
 
-import android.app.Application
 import android.content.Context
+import androidx.startup.Initializer
+import com.glance.guolindev.Glance
 
 /**
- * Application for the whole project.
+ * Customize initializer to initialize Glance.
  *
  * @author guolin
  * @since 2020/8/15
  */
-class GlanceApplication : Application() {
+class GlanceInitializer : Initializer<Unit> {
 
-    companion object {
-
-        /**
-         * Provide global context instance.
-         */
-        lateinit var context: Context
-
+    override fun create(context: Context) {
+        Glance.initialize(context)
     }
 
-    override fun onCreate() {
-        context = applicationContext
-        super.onCreate()
+    override fun dependencies(): List<Class<out Initializer<*>>> {
+        return emptyList()
     }
 
 }

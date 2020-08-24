@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev.sample
+package com.glance.guolindev.logic.model
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-}
+/**
+ * Data class represents db files.
+ *
+ * @author guolin
+ * @since 2020/8/24
+ */
+data class DBFile(val name: String, val path: String)

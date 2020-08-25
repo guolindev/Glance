@@ -1,8 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.glance.sample">
+    package="com.glance.guolindev">
 
     <application>
+
+        <activity android:name=".ui.db.DBActivity" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"
@@ -13,7 +16,6 @@
                 android:name="com.glance.guolindev.initializer.GlanceInitializer"
                 android:value="androidx.startup" />
         </provider>
-
     </application>
 
 </manifest>

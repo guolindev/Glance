@@ -34,8 +34,9 @@ object DBScanner {
     /**
      * Scan all db files of the current app. Including internal storage and external storage.
      * Use Flow to emits the db files once find one.
+     * @return Flow object to collect and get each db file.
      */
-    fun scanAllDBFiles() = flow<DBFile> {
+    suspend fun scanAllDBFiles() = flow<DBFile> {
         val dataDir = Glance.context.filesDir.parentFile
         if (dataDir != null) {
             scanDBFilesUnderSpecificDir(dataDir)
@@ -49,6 +50,8 @@ object DBScanner {
     /**
      * Scan all the files under specific directory recursively.
      * Emits each file ends with .db which consider as a db file.
+     * @param dir
+     *          Base directory to scan.
      */
     private suspend fun FlowCollector<DBFile>.scanDBFilesUnderSpecificDir(dir: File) {
         val listFiles = dir.listFiles()

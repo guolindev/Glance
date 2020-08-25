@@ -38,6 +38,7 @@ class DBScannerTest {
     fun scanAllDBFiles() {
         runBlocking {
             DBScanner.scanAllDBFiles()
+                .flowOn(Dispatchers.Default)
                 .collect {
                     assertTrue(it.name.endsWith(".db"))
                     assertTrue(it.path.endsWith(".db"))

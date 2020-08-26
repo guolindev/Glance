@@ -5,7 +5,15 @@
 
     <application>
 
-        <activity android:name=".ui.db.DBActivity" />
+        <activity
+            android:name=".ui.db.DBActivity"
+            android:label="Glance"
+            android:theme="@style/GlanceTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

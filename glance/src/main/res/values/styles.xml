@@ -1,0 +1,7 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="GlanceTheme" parent="Theme.MaterialComponents.NoActionBar">
+
+    </style>
+
+</resources>

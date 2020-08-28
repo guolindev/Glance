@@ -19,10 +19,13 @@ package com.glance.guolindev.logic.util
 import com.glance.guolindev.Glance
 import com.glance.guolindev.extension.isDBFile
 import com.glance.guolindev.logic.model.DBFile
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A utility scanner to scan internal and external storage of current app. Find all db files.
@@ -34,36 +37,38 @@ object DBScanner {
 
     /**
      * Scan all db files of the current app. Including internal storage and external storage.
-     * Use Flow to emits the db files once find one.
-     * @return Flow object to collect and get each db file.
+     * @return A db list contains all db files under the app.
      */
-    suspend fun scanAllDBFiles() = flow<DBFile> {
+    suspend fun scanAllDBFiles(): List<DBFile> = withContext(Dispatchers.Default) {
+        val dbList = ArrayList<DBFile>()
         val dataDir = Glance.context.filesDir.parentFile
         if (dataDir != null) {
-            scanDBFilesUnderSpecificDir(dataDir, true)
+            scanDBFilesUnderSpecificDir(dataDir, true, dbList)
         }
         val externalDataDir = Glance.context.getExternalFilesDir("")?.parentFile
         if (externalDataDir != null) {
-            scanDBFilesUnderSpecificDir(externalDataDir, false)
+            scanDBFilesUnderSpecificDir(externalDataDir, false, dbList)
         }
+        dbList
     }
 
     /**
      * Scan all the files under specific directory recursively.
-     * Emits each file ends with .db which consider as a db file.
      * @param dir
      *          Base directory to scan.
      * @param internal
      *          Indicates this is internal storage or external storage. True means internal, false means external.
+     * @param dbList
+     *          A db list contains all db files under the specific dir.
      */
-    private suspend fun FlowCollector<DBFile>.scanDBFilesUnderSpecificDir(dir: File, internal: Boolean) {
+    private fun scanDBFilesUnderSpecificDir(dir: File, internal: Boolean, dbList: ArrayList<DBFile>) {
         val listFiles = dir.listFiles()
         if (listFiles != null) {
             for (file in listFiles) {
                 if (file.isDirectory) {
-                    scanDBFilesUnderSpecificDir(file, internal)
+                    scanDBFilesUnderSpecificDir(file, internal, dbList)
                 } else if (file.isDBFile()) {
-                    emit(DBFile(file.name, file.path, internal, Date(file.lastModified())))
+                    dbList.add(DBFile(file.name, file.path, internal, Date(file.lastModified())))
                 }
             }
         }

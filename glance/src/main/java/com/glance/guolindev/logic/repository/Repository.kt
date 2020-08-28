@@ -16,7 +16,15 @@
 
 package com.glance.guolindev.logic.repository
 
+import android.content.Context
+import com.glance.guolindev.Glance
+import com.glance.guolindev.logic.model.DBFile
 import com.glance.guolindev.logic.util.DBScanner
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 
 /**
  * Repository class to communicate with ViewModels and back end logic handler.
@@ -26,11 +34,33 @@ import com.glance.guolindev.logic.util.DBScanner
  */
 object Repository {
 
+    private const val GLANCE_DB_CACHE = "glance_library_db_cache"
+
+    private const val GLANCE_CACHED_DATABASES = "glance_library_cached_databases"
+
+    suspend fun loadCachedDbFiles(): List<DBFile> = withContext(Dispatchers.Default) {
+        val prefs = Glance.context.getSharedPreferences(GLANCE_DB_CACHE, Context.MODE_PRIVATE)
+        val cachedDatabases = prefs.getString(GLANCE_CACHED_DATABASES, null)
+        if (cachedDatabases != null) {
+            val listType = object : TypeToken<ArrayList<DBFile>>(){}.type
+            val dbList: List<DBFile> = Gson().fromJson(cachedDatabases, listType)
+            dbList
+        } else {
+            emptyList()
+        }
+    }
+
     /**
      * Scan all db files of the current app. Including internal storage and external storage.
      * Use Flow to emits the db files once find one.
      * @return Flow object to collect and get each db file.
      */
     suspend fun scanAllDBFiles() = DBScanner.scanAllDBFiles()
+
+    suspend fun cacheDbFiles(dbList: List<DBFile>) = withContext(Dispatchers.Default) {
+        val editor = Glance.context.getSharedPreferences(GLANCE_DB_CACHE, Context.MODE_PRIVATE).edit()
+        editor.putString(GLANCE_CACHED_DATABASES, Gson().toJson(dbList))
+        editor.apply()
+    }
 
 }

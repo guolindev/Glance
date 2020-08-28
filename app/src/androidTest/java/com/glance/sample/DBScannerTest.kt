@@ -17,33 +17,20 @@
 package com.glance.sample
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.glance.guolindev.logic.util.DBScanner
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
  * Test for DBScanner class.
  * @author guolin
- * @since 2020/8/24
+ * @since 2020/8/28
  */
 @RunWith(AndroidJUnit4::class)
 class DBScannerTest {
 
     @Test
     fun scanAllDBFiles() {
-        runBlocking {
-            DBScanner.scanAllDBFiles()
-                .flowOn(Dispatchers.Default)
-                .collect {
-                    assertTrue(it.name.endsWith(".db"))
-                    assertTrue(it.path.endsWith(".db"))
-                }
-        }
+
     }
 
 }

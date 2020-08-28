@@ -2,4 +2,6 @@
 <resources>
     <string name="glance_library_external_storage">external\nstorage</string>
     <string name="glance_library_internal_storage">internal\nstorage</string>
+    <string name="glance_library_database_found">Database Found</string>
+    <string name="glance_library_databases_found">Databases Found</string>
 </resources>

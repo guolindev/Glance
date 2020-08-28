@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_margin="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="20dp"
     android:background="#2f2f2f"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -16,8 +18,10 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_gravity="center_vertical"
-            android:background="#4e462f"
-            app:cardCornerRadius="10dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#CDA836"
+            app:cardCornerRadius="15dp">
 
             <TextView
                 android:id="@+id/storageText"
@@ -25,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textSize="12sp"
                 android:textColor="#ffcd30"
+                android:textSize="12sp"
                 tools:text="external\nstorage" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -35,8 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -44,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 tools:text="sample.db" />
 
             <TextView

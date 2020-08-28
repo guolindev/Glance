@@ -23,6 +23,12 @@ class DBActivity : AppCompatActivity() {
         dbViewModel.dbFileLiveData.observe(this) {
             dbList.add(it)
             adapter.notifyItemInserted(adapter.itemCount)
+            val title = if (adapter.itemCount == 1) {
+                "1 ${getString(R.string.glance_library_database_found)}"
+            } else {
+                "${adapter.itemCount} ${getString(R.string.glance_library_databases_found)}"
+            }
+            titleText.text = title
         }
         dbViewModel.scanAllDBFiles()
     }

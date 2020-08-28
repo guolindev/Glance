@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
     tools:context="com.glance.guolindev.ui.db.DBActivity">
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:textSize="20sp"
+        android:textColor="#fff"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,9 +26,12 @@
         android:id="@+id/progressBar"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:padding="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         />
 
     <androidx.recyclerview.widget.RecyclerView

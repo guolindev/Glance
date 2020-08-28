@@ -25,7 +25,6 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
 /**
  * Repository class to communicate with ViewModels and back end logic handler.
  *

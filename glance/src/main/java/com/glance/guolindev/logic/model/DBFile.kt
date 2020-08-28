@@ -16,7 +16,6 @@
 
 package com.glance.guolindev.logic.model
 
-import org.litepal.crud.LitePalSupport
 import java.util.*
 
 /**

@@ -22,6 +22,7 @@ import com.glance.guolindev.logic.model.DBFile
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import java.io.File
+import java.util.*
 
 /**
  * A utility scanner to scan internal and external storage of current app. Find all db files.
@@ -62,7 +63,7 @@ object DBScanner {
                 if (file.isDirectory) {
                     scanDBFilesUnderSpecificDir(file, internal)
                 } else if (file.isDBFile()) {
-                    emit(DBFile(file.name, file.path, internal))
+                    emit(DBFile(file.name, file.path, internal, Date(file.lastModified())))
                 }
             }
         }

@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="1 Database Found" />
+        tools:text="1 Database Found" />
 
     <ProgressBar
         android:id="@+id/progressBar"

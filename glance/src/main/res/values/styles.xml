@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="GlanceTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="GlanceLibraryTheme" parent="Theme.MaterialComponents.NoActionBar">
 
     </style>
 

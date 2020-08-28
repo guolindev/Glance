@@ -22,4 +22,4 @@ package com.glance.guolindev.logic.model
  * @author guolin
  * @since 2020/8/24
  */
-data class DBFile(val name: String, val path: String)
+data class DBFile(val name: String, val path: String, val interal: Boolean)

@@ -39,11 +39,11 @@ object DBScanner {
     suspend fun scanAllDBFiles() = flow<DBFile> {
         val dataDir = Glance.context.filesDir.parentFile
         if (dataDir != null) {
-            scanDBFilesUnderSpecificDir(dataDir)
+            scanDBFilesUnderSpecificDir(dataDir, true)
         }
         val externalDataDir = Glance.context.getExternalFilesDir("")?.parentFile
         if (externalDataDir != null) {
-            scanDBFilesUnderSpecificDir(externalDataDir)
+            scanDBFilesUnderSpecificDir(externalDataDir, false)
         }
     }
 
@@ -52,15 +52,17 @@ object DBScanner {
      * Emits each file ends with .db which consider as a db file.
      * @param dir
      *          Base directory to scan.
+     * @param internal
+     *          Indicates this is internal storage or external storage. True means internal, false means external.
      */
-    private suspend fun FlowCollector<DBFile>.scanDBFilesUnderSpecificDir(dir: File) {
+    private suspend fun FlowCollector<DBFile>.scanDBFilesUnderSpecificDir(dir: File, internal: Boolean) {
         val listFiles = dir.listFiles()
         if (listFiles != null) {
             for (file in listFiles) {
                 if (file.isDirectory) {
-                    scanDBFilesUnderSpecificDir(file)
+                    scanDBFilesUnderSpecificDir(file, internal)
                 } else if (file.isDBFile()) {
-                    emit(DBFile(file.name, file.path))
+                    emit(DBFile(file.name, file.path, internal))
                 }
             }
         }

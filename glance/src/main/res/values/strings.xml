@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="glance_library_external_storage">external\nstorage</string>
+    <string name="glance_library_internal_storage">internal\nstorage</string>
+</resources>

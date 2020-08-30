@@ -22,13 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glance.guolindev.logic.model.DBFile
 import com.glance.guolindev.logic.repository.Repository
-import com.glance.guolindev.logic.util.DBScanner
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import org.litepal.LitePal
-import org.litepal.extension.isExist
 
 /**
  * DBViewModel holds view data of DBActivity and provide api to specific db operations.

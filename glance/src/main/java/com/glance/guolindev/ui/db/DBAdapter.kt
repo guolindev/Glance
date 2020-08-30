@@ -23,7 +23,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.DBFile
-import kotlinx.android.synthetic.main.db_item.view.*
+import kotlinx.android.synthetic.main.glance_library_db_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,7 +42,7 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.db_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_db_item, parent, false)
         val holder = ViewHolder(view)
         return holder
     }

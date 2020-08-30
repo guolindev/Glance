@@ -1,7 +1,10 @@
 <resources>
     <!-- Base application theme. -->
     <style name="GlanceLibraryTheme" parent="Theme.MaterialComponents.NoActionBar">
+    </style>
 
+    <style name="GlanceLibraryTheme.ProgressBar">
+        <item name="colorAccent">#fff</item>
     </style>
 
 </resources>

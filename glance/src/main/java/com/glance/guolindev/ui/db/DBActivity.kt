@@ -23,8 +23,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.DBFile
-import kotlinx.android.synthetic.main.activity_db.*
-import kotlin.concurrent.thread
+import kotlinx.android.synthetic.main.glance_library_activity_db.*
 
 class DBActivity : AppCompatActivity() {
 
@@ -32,7 +31,7 @@ class DBActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_db)
+        setContentView(R.layout.glance_library_activity_db)
         val dbList = ArrayList<DBFile>()
         val adapter = DBAdapter(dbList)
         val layoutManager = LinearLayoutManager(this)

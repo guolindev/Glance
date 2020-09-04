@@ -8,14 +8,17 @@
         <activity
             android:name=".ui.db.DBActivity"
             android:label="Glance"
-            android:theme="@style/GlanceLibraryTheme">
+            android:theme="@style/GlanceDBActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.table.TableActivity" />
+        <activity
+            android:name=".ui.table.TableActivity"
+            android:theme="@style/GlanceTableActivityTheme"
+            />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

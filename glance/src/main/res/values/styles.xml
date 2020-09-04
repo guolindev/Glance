@@ -1,9 +1,12 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="GlanceLibraryTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="GlanceDBActivityTheme" parent="Theme.MaterialComponents.NoActionBar">
     </style>
 
-    <style name="GlanceLibraryTheme.ProgressBar">
+    <style name="GlanceTableActivityTheme" parent="Theme.MaterialComponents.NoActionBar">
+    </style>
+
+    <style name="GlanceDBActivityTheme.ProgressBar">
         <item name="colorAccent">#fff</item>
     </style>
 

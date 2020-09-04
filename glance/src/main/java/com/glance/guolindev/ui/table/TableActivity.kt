@@ -19,9 +19,12 @@ package com.glance.guolindev.ui.table
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.glance.guolindev.R
+import kotlinx.android.synthetic.main.glance_library_activity_table.*
 
 /**
  * Table layer of Activity, which shows all tables in a specific database file.
@@ -35,21 +38,39 @@ class TableActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.glance_library_activity_table)
+        val dbName = intent.getStringExtra(DB_NAME)
         val dbPath = intent.getStringExtra(DB_PATH)
         if (dbPath == null) {
             Toast.makeText(this, "dbPath is null which is not a correct state.", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
+        setSupportActionBar(toolbar)
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.title = dbName
         viewModel.getAllTablesInDB(dbPath)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {
 
+        const val DB_NAME = "db_name"
         const val DB_PATH = "db_path"
 
-        fun actionOpenDatabase(context: Context, dbPath: String) {
+        fun actionOpenDatabase(context: Context, dbName: String, dbPath: String) {
             val intent = Intent(context, TableActivity::class.java)
+            intent.putExtra(DB_NAME, dbName)
             intent.putExtra(DB_PATH, dbPath)
             context.startActivity(intent)
         }

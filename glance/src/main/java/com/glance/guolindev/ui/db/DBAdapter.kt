@@ -59,7 +59,7 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
                 Toast.makeText(parent.context, "This file is not a valid db file.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            TableActivity.actionOpenDatabase(parent.context, dbFile.path)
+            TableActivity.actionOpenDatabase(parent.context, dbFile.name, dbFile.path)
         }
         return holder
     }

@@ -21,7 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glance.guolindev.logic.model.DBFile
-import com.glance.guolindev.logic.repository.Repository
+import com.glance.guolindev.logic.repository.DBRepository
 import kotlinx.coroutines.launch
 
 /**
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * @author guolin
  * @since 2020/8/25
  */
-class DBViewModel : ViewModel() {
+class DBViewModel(private val repository: DBRepository) : ViewModel() {
 
     /**
      * The LiveData variable to observe db file list.
@@ -47,15 +47,15 @@ class DBViewModel : ViewModel() {
     fun loadAndRefreshDBFiles() = viewModelScope.launch {
         // There're 3 steps in this function.
         // First load db files from cache and show the on UI immediately.
-        val cachedDBList = Repository.loadCachedDbFiles()
+        val cachedDBList = repository.loadCachedDbFiles()
         _dbListLiveData.value = cachedDBList
 
         // Second scan all db files of current app and update the UI with DiffUtil.
-        val scannedDBList = Repository.scanAllDBFiles()
+        val scannedDBList = repository.scanAllDBFiles()
         _dbListLiveData.value = scannedDBList
 
         // Third update the cache with lasted data.
-        Repository.cacheDbFiles(scannedDBList)
+        repository.cacheDbFiles(scannedDBList)
     }
 
     /**

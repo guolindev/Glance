@@ -26,16 +26,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Repository class to communicate with ViewModels and back end logic handler.
+ * DBRepository to communicate with ViewModels and database layer back end logic handler.
  *
  * @author guolin
  * @since 2020/8/25
  */
-object Repository {
 
-    private const val GLANCE_DB_CACHE = "glance_library_db_cache"
+private const val GLANCE_DB_CACHE = "glance_library_db_cache"
 
-    private const val GLANCE_CACHED_DATABASES = "glance_library_cached_databases"
+private const val GLANCE_CACHED_DATABASES = "glance_library_cached_databases"
+
+class DBRepository {
 
     suspend fun loadCachedDbFiles(): List<DBFile> = withContext(Dispatchers.Default) {
         val prefs = Glance.context.getSharedPreferences(GLANCE_DB_CACHE, Context.MODE_PRIVATE)

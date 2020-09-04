@@ -25,9 +25,15 @@ import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.DBFile
 import kotlinx.android.synthetic.main.glance_library_activity_db.*
 
+/**
+ * Databases layer of Activity, which shows all the databases file found by Glance.
+ * Glance will scan the internal and external storage of current app and display all the files named end with .db.
+ * @author guolin
+ * @since 2020/8/25
+ */
 class DBActivity : AppCompatActivity() {
 
-    private val dbViewModel by lazy { ViewModelProvider(this).get(DBViewModel::class.java) }
+    private val dbViewModel by lazy { ViewModelProvider(this, DBViewModelFactory()).get(DBViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

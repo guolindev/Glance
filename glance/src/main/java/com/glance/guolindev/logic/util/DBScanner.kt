@@ -33,7 +33,7 @@ import kotlin.collections.ArrayList
  * @author guolin
  * @since 2020/8/15
  */
-object DBScanner {
+class DBScanner {
 
     /**
      * Scan all db files of the current app. Including internal storage and external storage.

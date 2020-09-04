@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev.logic.util
+package com.glance.guolindev.logic.repository
 
-import com.glance.guolindev.logic.repository.DBRepository
-import com.glance.guolindev.logic.repository.TableRepository
+import com.glance.guolindev.logic.model.Table
+import com.glance.guolindev.logic.util.DBHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
- * ServiceLocator to provide instances that no one should create.
- * Basically this work should be done by a DI library like hilt, but since we do not charge the Application class, so just keep it simple by a ServiceLocator.
+ * TableRepository to communicate with ViewModels and table layer back end logic handler.
  *
  * @author guolin
  * @since 2020/9/4
  */
-object ServiceLocator {
+class TableRepository(private val dbHelper: DBHelper) {
 
-    fun provideDBRepository() = DBRepository(provideDBScanner())
-
-    fun provideTableRepository() = TableRepository(provideDBHelper())
-
-    private fun provideDBScanner() = DBScanner()
-
-    private fun provideDBHelper() = DBHelper()
+    /**
+     * Find all tables in a specific db file represented by the [dbPath] parameter.
+     */
+    suspend fun getAllTablesInDB(dbPath: String): List<Table> = withContext(Dispatchers.Default) {
+        val database = dbHelper.openDatabase(dbPath)
+        dbHelper.getAllTablesInDB(database)
+    }
 
 }

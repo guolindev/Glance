@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev.logic.util
+package com.glance.guolindev.ui.table
 
-import com.glance.guolindev.logic.repository.DBRepository
-import com.glance.guolindev.logic.repository.TableRepository
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.glance.guolindev.logic.util.ServiceLocator
 
 /**
- * ServiceLocator to provide instances that no one should create.
- * Basically this work should be done by a DI library like hilt, but since we do not charge the Application class, so just keep it simple by a ServiceLocator.
+ * The ViewModel Factory to create TableViewModel instance and pass a TableRepository instance as parameter which provided by ServiceLocator.
  *
  * @author guolin
  * @since 2020/9/4
  */
-object ServiceLocator {
+class TableViewModelFactory : ViewModelProvider.Factory {
 
-    fun provideDBRepository() = DBRepository(provideDBScanner())
-
-    fun provideTableRepository() = TableRepository(provideDBHelper())
-
-    private fun provideDBScanner() = DBScanner()
-
-    private fun provideDBHelper() = DBHelper()
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return TableViewModel(ServiceLocator.provideTableRepository()) as T
+    }
 
 }

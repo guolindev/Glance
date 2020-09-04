@@ -20,15 +20,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.extension.exists
+import com.glance.guolindev.extension.isValidDBFile
 import com.glance.guolindev.logic.model.DBFile
+import com.glance.guolindev.ui.table.TableActivity
 import kotlinx.android.synthetic.main.glance_library_db_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * Adapter for the RecyclerView to show all the db files of current app.
+ *
  * @author guolin
  * @since 2020/8/26
  */
@@ -44,6 +49,18 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_db_item, parent, false)
         val holder = ViewHolder(view)
+        holder.itemView.setOnClickListener {
+            val position = holder.adapterPosition
+            val dbFile = dbList[position]
+            if (!dbFile.exists()) {
+                Toast.makeText(parent.context, "This file doesn't exist anymore.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else if (!dbFile.isValidDBFile()) {
+                Toast.makeText(parent.context, "This file is not a valid db file.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            TableActivity.actionOpenDatabase(parent.context, dbFile.path)
+        }
         return holder
     }
 

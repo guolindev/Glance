@@ -15,6 +15,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.table.TableActivity" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

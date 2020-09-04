@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev.logic.util
-
-import com.glance.guolindev.logic.repository.DBRepository
-import com.glance.guolindev.logic.repository.TableRepository
+package com.glance.guolindev.logic.model
 
 /**
- * ServiceLocator to provide instances that no one should create.
- * Basically this work should be done by a DI library like hilt, but since we do not charge the Application class, so just keep it simple by a ServiceLocator.
+ * A generic class that holds a value with its success, error or loading status.
  *
  * @author guolin
  * @since 2020/9/4
  */
-object ServiceLocator {
+data class Resource<T>(val status: Int, val data: T?, val message: String?) {
 
-    fun provideDBRepository() = DBRepository(provideDBScanner())
+    companion object {
 
-    fun provideTableRepository() = TableRepository(provideDBHelper())
+        private const val SUCCESS = 0
+        private const val ERROR = 1
+        private const val LOADING = 2
 
-    private fun provideDBScanner() = DBScanner()
+        fun <T> success(data: T?) = Resource(SUCCESS, data, null)
 
-    private fun provideDBHelper() = DBHelper()
+        fun <T> error(msg: String) = Resource<T>(ERROR, null, msg)
+
+        fun <T> loading() = Resource<T>(LOADING, null, null)
+    }
 
 }

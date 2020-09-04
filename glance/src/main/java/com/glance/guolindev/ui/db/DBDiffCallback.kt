@@ -21,6 +21,7 @@ import com.glance.guolindev.logic.model.DBFile
 
 /**
  * DiffUtil callback implementation to help recyclerview know how to converts the old list into the new list.
+ *
  * @author guolin
  * @since 2020/8/28
  */

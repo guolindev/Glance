@@ -36,7 +36,7 @@ private const val GLANCE_DB_CACHE = "glance_library_db_cache"
 
 private const val GLANCE_CACHED_DATABASES = "glance_library_cached_databases"
 
-class DBRepository {
+class DBRepository(private val dbScanner: DBScanner) {
 
     suspend fun loadCachedDbFiles(): List<DBFile> = withContext(Dispatchers.Default) {
         val prefs = Glance.context.getSharedPreferences(GLANCE_DB_CACHE, Context.MODE_PRIVATE)
@@ -55,7 +55,7 @@ class DBRepository {
      * Use Flow to emits the db files once find one.
      * @return Flow object to collect and get each db file.
      */
-    suspend fun scanAllDBFiles() = DBScanner.scanAllDBFiles()
+    suspend fun scanAllDBFiles() = dbScanner.scanAllDBFiles()
 
     suspend fun cacheDbFiles(dbList: List<DBFile>) = withContext(Dispatchers.Default) {
         val editor = Glance.context.getSharedPreferences(GLANCE_DB_CACHE, Context.MODE_PRIVATE).edit()

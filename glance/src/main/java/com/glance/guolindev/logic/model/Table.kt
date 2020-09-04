@@ -14,26 +14,12 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev.logic.util
-
-import com.glance.guolindev.logic.repository.DBRepository
-import com.glance.guolindev.logic.repository.TableRepository
+package com.glance.guolindev.logic.model
 
 /**
- * ServiceLocator to provide instances that no one should create.
- * Basically this work should be done by a DI library like hilt, but since we do not charge the Application class, so just keep it simple by a ServiceLocator.
+ * Data class represents a table in db file.
  *
  * @author guolin
  * @since 2020/9/4
  */
-object ServiceLocator {
-
-    fun provideDBRepository() = DBRepository(provideDBScanner())
-
-    fun provideTableRepository() = TableRepository(provideDBHelper())
-
-    private fun provideDBScanner() = DBScanner()
-
-    private fun provideDBHelper() = DBHelper()
-
-}
+class Table(val name: String)

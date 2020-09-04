@@ -48,7 +48,7 @@ class DBActivity : AppCompatActivity() {
             dbList.clear()
             dbList.addAll(newDBList)
             diffResult.dispatchUpdatesTo(adapter)
-            val title = if (adapter.itemCount == 1) {
+            val title = if (adapter.itemCount <= 1) {
                 "1 ${getString(R.string.glance_library_database_found)}"
             } else {
                 "${adapter.itemCount} ${getString(R.string.glance_library_databases_found)}"

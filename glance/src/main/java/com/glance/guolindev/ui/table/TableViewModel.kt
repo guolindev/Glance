@@ -52,7 +52,7 @@ class TableViewModel(private val repository: TableRepository) : ViewModel() {
     fun getAllTablesInDB(dbPath: String) {
         viewModelScope.launch(handler) {
             _tablesLiveData.value = Resource.loading()
-            _tablesLiveData.value = Resource.success(repository.getAllTablesInDB(dbPath))
+            _tablesLiveData.value = Resource.success(repository.getSortedTablesInDB(dbPath))
         }
     }
 

@@ -31,10 +31,12 @@ class TableRepository(private val dbHelper: DBHelper) {
 
     /**
      * Find all tables in a specific db file represented by the [dbPath] parameter.
+     * And sort them by the table name.
      */
-    suspend fun getAllTablesInDB(dbPath: String): List<Table> = withContext(Dispatchers.Default) {
+    suspend fun getSortedTablesInDB(dbPath: String): List<Table> = withContext(Dispatchers.Default) {
         val database = dbHelper.openDatabase(dbPath)
-        dbHelper.getAllTablesInDB(database)
+        val tableList = dbHelper.getTablesInDB(database)
+        tableList.sortedBy { it.name }
     }
 
 }

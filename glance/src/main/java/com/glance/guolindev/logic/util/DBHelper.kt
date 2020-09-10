@@ -38,7 +38,7 @@ class DBHelper {
     /**
      * Find all tables by the [database] parameter.
      */
-    suspend fun getAllTablesInDB(database: SQLiteDatabase): List<Table> = withContext(Dispatchers.Default) {
+    suspend fun getTablesInDB(database: SQLiteDatabase): List<Table> = withContext(Dispatchers.Default) {
         val tableList = ArrayList<Table>()
         database.rawQuery("select * from sqlite_master", null).use { cursor ->
             if (cursor.moveToFirst()) {

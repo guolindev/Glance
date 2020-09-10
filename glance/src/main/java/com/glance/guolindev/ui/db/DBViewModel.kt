@@ -40,11 +40,17 @@ class DBViewModel(private val repository: DBRepository) : ViewModel() {
 
     private val _dbListLiveData = MutableLiveData<List<DBFile>>()
 
+    val progressLiveData: LiveData<Boolean>
+        get() = _progressLiveData
+
+    private val _progressLiveData = MutableLiveData<Boolean>()
+
     /**
      * Load the db files from cache immediately and show them on UI.
      * Then scan all db files of current app.
      */
     fun loadAndRefreshDBFiles() = viewModelScope.launch {
+        _progressLiveData.value = true // start loading
         // There're 3 steps in this function.
         // First load db files from cache and show the on UI immediately.
         val cachedDBList = repository.loadCachedDbFiles()
@@ -56,6 +62,7 @@ class DBViewModel(private val repository: DBRepository) : ViewModel() {
 
         // Third update the cache with lasted data.
         repository.cacheDbFiles(scannedDBList)
+        _progressLiveData.value = false // finish loading
     }
 
     /**

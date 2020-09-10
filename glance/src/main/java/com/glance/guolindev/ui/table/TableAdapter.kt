@@ -26,7 +26,7 @@ import com.glance.guolindev.logic.model.Table
 import kotlinx.android.synthetic.main.glance_library_table_item.view.*
 
 /**
- *
+ * Adapter for the RecyclerView to show all tables in db file.
  *
  * @author guolin
  * @since 2020/9/10

@@ -18,6 +18,7 @@ package com.glance.guolindev.ui.db
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +55,15 @@ class DBActivity : AppCompatActivity() {
                 "${adapter.itemCount} ${getString(R.string.glance_library_databases_found)}"
             }
             titleText.text = title
+        }
+        dbViewModel.progressLiveData.observe(this) {
+            progressBar.visibility = if (it) {
+                // start loading
+                View.VISIBLE
+            } else {
+                // finish loading
+                View.INVISIBLE
+            }
         }
         dbViewModel.loadAndRefreshDBFiles()
     }

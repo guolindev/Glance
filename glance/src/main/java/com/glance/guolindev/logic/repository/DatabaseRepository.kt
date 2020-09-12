@@ -16,27 +16,42 @@
 
 package com.glance.guolindev.logic.repository
 
+import android.database.sqlite.SQLiteDatabase
 import com.glance.guolindev.logic.model.Table
 import com.glance.guolindev.logic.util.DBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * TableRepository to communicate with ViewModels and table layer back end logic handler.
+ * DatabaseRepository to communicate with ViewModels and database layer back end logic handler.
  *
  * @author guolin
  * @since 2020/9/4
  */
-class TableRepository(private val dbHelper: DBHelper) {
+class DatabaseRepository(private val dbHelper: DBHelper) {
+
+    var openedDatabase: SQLiteDatabase? = null
 
     /**
      * Find all tables in a specific db file represented by the [dbPath] parameter.
      * And sort them by the table name.
      */
     suspend fun getSortedTablesInDB(dbPath: String): List<Table> = withContext(Dispatchers.Default) {
-        val database = dbHelper.openDatabase(dbPath)
-        val tableList = dbHelper.getTablesInDB(database)
-        tableList.sortedBy { it.name }
+        openedDatabase = dbHelper.openDatabase(dbPath)
+        openedDatabase?.let {
+            val tableList = dbHelper.getTablesInDB(it)
+            tableList.sortedBy { it.name }
+        } ?: emptyList()
+    }
+
+
+
+    /**
+     * Close the opened databases and makes [openedDatabase] null.
+     */
+    fun closeDatabase() {
+        openedDatabase?.close()
+        openedDatabase = null
     }
 
 }

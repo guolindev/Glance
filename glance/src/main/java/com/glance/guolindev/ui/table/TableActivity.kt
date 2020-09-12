@@ -98,6 +98,11 @@ class TableActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.closeDatabase()
+    }
+
     companion object {
 
         const val DB_NAME = "db_name"

@@ -16,8 +16,8 @@
 
 package com.glance.guolindev.logic.util
 
-import com.glance.guolindev.logic.repository.DBRepository
-import com.glance.guolindev.logic.repository.TableRepository
+import com.glance.guolindev.logic.repository.FileRepository
+import com.glance.guolindev.logic.repository.DatabaseRepository
 
 /**
  * ServiceLocator to provide instances that no one should create.
@@ -28,9 +28,9 @@ import com.glance.guolindev.logic.repository.TableRepository
  */
 object ServiceLocator {
 
-    fun provideDBRepository() = DBRepository(provideDBScanner())
+    fun provideDBRepository() = FileRepository(provideDBScanner())
 
-    fun provideTableRepository() = TableRepository(provideDBHelper())
+    fun provideTableRepository() = DatabaseRepository(provideDBHelper())
 
     private fun provideDBScanner() = DBScanner()
 

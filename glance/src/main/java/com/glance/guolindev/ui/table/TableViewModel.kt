@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Table
-import com.glance.guolindev.logic.repository.TableRepository
+import com.glance.guolindev.logic.repository.DatabaseRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
  * @author guolin
  * @since 2020/9/4
  */
-class TableViewModel(private val repository: TableRepository) : ViewModel() {
+class TableViewModel(private val repository: DatabaseRepository) : ViewModel() {
 
     /**
      * The LiveData variable to observe db file list.
@@ -54,6 +54,13 @@ class TableViewModel(private val repository: TableRepository) : ViewModel() {
             _tablesLiveData.value = Resource.loading()
             _tablesLiveData.value = Resource.success(repository.getSortedTablesInDB(dbPath))
         }
+    }
+
+    /**
+     * Close the opened database when [TableActivity] destroyed.
+     */
+    fun closeDatabase() {
+        repository.closeDatabase()
     }
 
 }

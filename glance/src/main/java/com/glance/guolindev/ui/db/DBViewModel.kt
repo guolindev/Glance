@@ -21,7 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glance.guolindev.logic.model.DBFile
-import com.glance.guolindev.logic.repository.DBRepository
+import com.glance.guolindev.logic.repository.FileRepository
 import kotlinx.coroutines.launch
 
 /**
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * @author guolin
  * @since 2020/8/25
  */
-class DBViewModel(private val repository: DBRepository) : ViewModel() {
+class DBViewModel(private val repository: FileRepository) : ViewModel() {
 
     /**
      * The LiveData variable to observe db file list.

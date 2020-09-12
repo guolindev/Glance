@@ -25,19 +25,21 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * DBRepository to communicate with ViewModels and database layer back end logic handler.
- *
- * @author guolin
- * @since 2020/8/25
- */
-
 private const val GLANCE_DB_CACHE = "glance_library_db_cache"
 
 private const val GLANCE_CACHED_DATABASES = "glance_library_cached_databases"
 
-class DBRepository(private val dbScanner: DBScanner) {
+/**
+ * DBRepository to communicate with ViewModels and .db files layer back end logic handler.
+ *
+ * @author guolin
+ * @since 2020/8/25
+ */
+class FileRepository(private val dbScanner: DBScanner) {
 
+    /**
+     * Load db files from cache. This will show the cached db files on ui immediately.
+     */
     suspend fun loadCachedDbFiles(): List<DBFile> = withContext(Dispatchers.Default) {
         val prefs = Glance.context.getSharedPreferences(GLANCE_DB_CACHE, Context.MODE_PRIVATE)
         val cachedDatabases = prefs.getString(GLANCE_CACHED_DATABASES, null)
@@ -57,6 +59,9 @@ class DBRepository(private val dbScanner: DBScanner) {
      */
     suspend fun scanAllDBFiles() = dbScanner.scanAllDBFiles()
 
+    /**
+     * Save the latest db list into cache.
+     */
     suspend fun cacheDbFiles(dbList: List<DBFile>) = withContext(Dispatchers.Default) {
         val editor = Glance.context.getSharedPreferences(GLANCE_DB_CACHE, Context.MODE_PRIVATE).edit()
         editor.putString(GLANCE_CACHED_DATABASES, Gson().toJson(dbList))

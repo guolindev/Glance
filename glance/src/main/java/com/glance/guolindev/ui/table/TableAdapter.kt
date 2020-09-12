@@ -23,6 +23,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.Table
+import com.glance.guolindev.ui.data.DataActivity
 import kotlinx.android.synthetic.main.glance_library_table_item.view.*
 
 /**
@@ -41,6 +42,9 @@ class TableAdapter(private val tableList: List<Table>) : RecyclerView.Adapter<Ta
         val view = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_table_item, parent, false)
         val holder = ViewHolder(view)
         holder.itemView.setOnClickListener {
+            val position = holder.adapterPosition
+            val table = tableList[position]
+            DataActivity.actionOpenTable(parent.context, table.name)
         }
         return holder
     }

@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev.ui.table
+package com.glance.guolindev.ui.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.glance.guolindev.logic.util.ServiceLocator
 
 /**
- * The ViewModel Factory to create TableViewModel instance and pass a DatabaseRepository instance as parameter which provided by ServiceLocator.
+ * The ViewModel Factory to create DataViewModel instance and pass a DatabaseRepository instance as parameter which provided by ServiceLocator.
  *
  * @author guolin
  * @since 2020/9/4
  */
-class TableViewModelFactory : ViewModelProvider.Factory {
+class DataViewModelFactory : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return TableViewModel(ServiceLocator.provideTableRepository()) as T
+        return DataViewModel(ServiceLocator.provideTableRepository()) as T
     }
 
 }

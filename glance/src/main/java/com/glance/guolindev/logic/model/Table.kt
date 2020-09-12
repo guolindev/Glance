@@ -22,4 +22,4 @@ package com.glance.guolindev.logic.model
  * @author guolin
  * @since 2020/9/4
  */
-class Table(val name: String)
+data class Table(val name: String)

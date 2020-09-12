@@ -16,13 +16,21 @@
 package com.glance.guolindev.logic.util
 
 import android.database.sqlite.SQLiteDatabase
+import com.glance.guolindev.logic.model.Column
+import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.Table
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.RuntimeException
 
+/**
+ * We set page size to 2000 in database layer.
+ */
+const val PAGE_SIZE = 2000
 
 /**
  * Helper class with all necessary database operations.
+ *
  * @author guolin
  * @since 2020/9/4
  */
@@ -36,11 +44,11 @@ class DBHelper {
     }
 
     /**
-     * Find all tables by the [database] parameter.
+     * Find all tables by the [db] parameter.
      */
-    suspend fun getTablesInDB(database: SQLiteDatabase): List<Table> = withContext(Dispatchers.Default) {
+    suspend fun getTablesInDB(db: SQLiteDatabase) = withContext(Dispatchers.Default) {
         val tableList = ArrayList<Table>()
-        database.rawQuery("select * from sqlite_master", null).use { cursor ->
+        db.rawQuery("select * from sqlite_master", null).use { cursor ->
             if (cursor.moveToFirst()) {
                 do {
                     val tableName = cursor.getString(cursor.getColumnIndexOrThrow("tbl_name"))
@@ -49,6 +57,67 @@ class DBHelper {
             }
         }
         tableList
+    }
+
+    /**
+     * Get all columns in a specific table, and return them in a List.
+     */
+    suspend fun getColumnsInTable(db: SQLiteDatabase, table: String) = withContext(Dispatchers.Default) {
+        val columnList = ArrayList<Column>()
+        val getColumnsSQL = "pragma table_info($table)"
+        db.rawQuery(getColumnsSQL, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                do {
+                    val columnName = cursor.getString(cursor.getColumnIndexOrThrow("name"))
+                    val columnType = cursor.getString(cursor.getColumnIndexOrThrow("type"))
+                    val column = Column(columnName, columnType)
+                    columnList.add(column)
+                } while (cursor.moveToNext())
+            }
+        }
+        columnList
+    }
+
+    /**
+     * Load data in a table by page. Need to specify which columns data need to load.
+     * Then we can load the data into a rowList and match the position for the [columns] param.
+     */
+    suspend fun loadDataInTable(db: SQLiteDatabase, table: String, page: Int, columns: List<Column>) = withContext(Dispatchers.Default) {
+        val rowList = ArrayList<Row>()
+        val offset = page * PAGE_SIZE
+        val limit = "${offset},${PAGE_SIZE}"
+        db.query(table, null, null, null, null, null, null, limit)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                do {
+                    val dataList = ArrayList<String>()
+                    for (column in columns) {
+                        val columnIndex = cursor.getColumnIndexOrThrow(column.name)
+                        val data: String = when {
+                            column.type.equals("text", true) -> {
+                                 cursor.getString(columnIndex)
+                            }
+                            column.type.equals("integer", true) -> {
+                                cursor.getLong(columnIndex).toString()
+                            }
+                            column.type.equals("real", true) -> {
+                                cursor.getDouble(columnIndex).toString()
+                            }
+                            column.type.equals("blob", true) -> {
+                                "<Binary Data>"
+                            }
+                            column.type.equals("null", true) -> {
+                                "<NULL>"
+                            } else -> {
+                                throw RuntimeException("The type of column ${column.name} in table ${table} is ${column.type} which is not supported.")
+                            }
+                        }
+                        dataList.add(data)
+                    }
+                    rowList.add(Row((dataList)))
+                } while (cursor.moveToNext())
+            }
+        }
+        rowList
     }
 
 }

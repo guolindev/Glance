@@ -49,17 +49,15 @@ class TableViewModel(private val repository: DatabaseRepository) : ViewModel() {
     /**
      * Get all tables in a specific db file represented by the [dbPath] parameter.
      */
-    fun getAllTablesInDB(dbPath: String) {
-        viewModelScope.launch(handler) {
-            _tablesLiveData.value = Resource.loading()
-            _tablesLiveData.value = Resource.success(repository.getSortedTablesInDB(dbPath))
-        }
+    fun getAllTablesInDB(dbPath: String) = viewModelScope.launch(handler) {
+        _tablesLiveData.value = Resource.loading()
+        _tablesLiveData.value = Resource.success(repository.getSortedTablesInDB(dbPath))
     }
 
     /**
      * Close the opened database when [TableActivity] destroyed.
      */
-    fun closeDatabase() {
+    fun closeDatabase() = viewModelScope.launch(handler) {
         repository.closeDatabase()
     }
 

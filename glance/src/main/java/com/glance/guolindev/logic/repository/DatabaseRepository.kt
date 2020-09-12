@@ -17,10 +17,12 @@
 package com.glance.guolindev.logic.repository
 
 import android.database.sqlite.SQLiteDatabase
+import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Table
 import com.glance.guolindev.logic.util.DBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.RuntimeException
 
 /**
  * DatabaseRepository to communicate with ViewModels and database layer back end logic handler.
@@ -36,7 +38,7 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
      * Find all tables in a specific db file represented by the [dbPath] parameter.
      * And sort them by the table name.
      */
-    suspend fun getSortedTablesInDB(dbPath: String): List<Table> = withContext(Dispatchers.Default) {
+    suspend fun getSortedTablesInDB(dbPath: String) = withContext(Dispatchers.Default) {
         openedDatabase = dbHelper.openDatabase(dbPath)
         openedDatabase?.let {
             val tableList = dbHelper.getTablesInDB(it)
@@ -44,12 +46,19 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
         } ?: emptyList()
     }
 
-
+    /**
+     * Get all columns in a specific table, and return them in a List.
+     */
+    suspend fun getColumnsInTable(table: String) = withContext(Dispatchers.Default) {
+        openedDatabase?.let { db ->
+            dbHelper.getColumnsInTable(db, table)
+        } ?: throw RuntimeException("Opened database is null.")
+    }
 
     /**
      * Close the opened databases and makes [openedDatabase] null.
      */
-    fun closeDatabase() {
+    suspend fun closeDatabase() = withContext(Dispatchers.Default) {
         openedDatabase?.close()
         openedDatabase = null
     }

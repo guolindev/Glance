@@ -39,7 +39,7 @@ class DBScanner {
      * Scan all db files of the current app. Including internal storage and external storage.
      * @return A db list contains all db files under the app.
      */
-    suspend fun scanAllDBFiles(): List<DBFile> = withContext(Dispatchers.Default) {
+    suspend fun scanAllDBFiles() = withContext(Dispatchers.Default) {
         val dbList = ArrayList<DBFile>()
         val dataDir = Glance.context.filesDir.parentFile
         if (dataDir != null) {

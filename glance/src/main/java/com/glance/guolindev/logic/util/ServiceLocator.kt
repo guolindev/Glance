@@ -28,12 +28,14 @@ import com.glance.guolindev.logic.repository.DatabaseRepository
  */
 object ServiceLocator {
 
-    fun provideDBRepository() = FileRepository(provideDBScanner())
+    private val dbScanner = DBScanner()
 
-    fun provideTableRepository() = DatabaseRepository(provideDBHelper())
+    private val dbHelper = DBHelper()
 
-    private fun provideDBScanner() = DBScanner()
+    private val databaseRepository = DatabaseRepository(dbHelper)
 
-    private fun provideDBHelper() = DBHelper()
+    fun provideDBRepository() = FileRepository(dbScanner)
+
+    fun provideTableRepository() = databaseRepository
 
 }

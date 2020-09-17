@@ -24,9 +24,9 @@ import kotlinx.coroutines.withContext
 import java.lang.RuntimeException
 
 /**
- * We set page size to 2000 in database layer.
+ * We set page size to 120 in database layer.
  */
-const val PAGE_SIZE = 2000
+const val PAGE_SIZE = 120
 
 /**
  * Helper class with all necessary database operations.

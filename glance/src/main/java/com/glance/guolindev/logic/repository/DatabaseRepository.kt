@@ -17,12 +17,22 @@
 package com.glance.guolindev.logic.repository
 
 import android.database.sqlite.SQLiteDatabase
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.glance.guolindev.logic.model.Column
-import com.glance.guolindev.logic.model.Table
+import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.util.DBHelper
+import com.glance.guolindev.logic.util.DBPagingSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.lang.RuntimeException
+
+/**
+ * We set page size to 30 in pager layer. So we only load 30 items each time but after 4 times load by pager we will load once from db.
+ */
+const val PAGE_SIZE = 30
 
 /**
  * DatabaseRepository to communicate with ViewModels and database layer back end logic handler.
@@ -61,6 +71,15 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
     suspend fun closeDatabase() = withContext(Dispatchers.Default) {
         openedDatabase?.close()
         openedDatabase = null
+    }
+
+    /**
+     * Get the stream that could to load data by [DBPagingSource].
+     */
+    fun getDataInTableStream(table: String, columns: List<Column>): Flow<PagingData<Row>> {
+        openedDatabase?.let { db ->
+            return Pager(config =  PagingConfig(PAGE_SIZE), pagingSourceFactory = { DBPagingSource(dbHelper, db, table, columns) }).flow
+        } ?: throw RuntimeException("Opened database is null.")
     }
 
 }

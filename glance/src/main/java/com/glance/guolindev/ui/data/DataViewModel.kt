@@ -20,9 +20,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
-import com.glance.guolindev.logic.model.Table
 import com.glance.guolindev.logic.repository.DatabaseRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -46,9 +46,17 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
         _columnsLiveData.value = Resource.error(throwable.message ?: "Uncaught exception happens")
     }
 
+    /**
+     * Get the columns of a table.
+     */
     fun getColumnsInTable(table: String) = viewModelScope.launch(handler) {
         val columns = repository.getColumnsInTable(table)
         _columnsLiveData.value = Resource.success(columns)
     }
+
+    /**
+     * Get the flow to load data from specific table.
+     */
+    fun loadDataFromTable(table: String, columns: List<Column>) = repository.getDataFromTableStream(table, columns).cachedIn(viewModelScope)
 
 }

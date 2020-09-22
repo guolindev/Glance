@@ -22,8 +22,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.glance.guolindev.R
+import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class DataActivity : AppCompatActivity() {
 
@@ -49,6 +53,14 @@ class DataActivity : AppCompatActivity() {
             }
         }
         viewModel.getColumnsInTable(table)
+    }
+
+    fun loadDataFromTable(table: String, columns: List<Column>) {
+        lifecycleScope.launch {
+            viewModel.loadDataFromTable(table, columns).collect {
+
+            }
+        }
     }
 
     companion object {

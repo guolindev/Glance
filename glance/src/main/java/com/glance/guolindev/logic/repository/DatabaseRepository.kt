@@ -76,7 +76,7 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
     /**
      * Get the stream that could to load data by [DBPagingSource].
      */
-    fun getDataInTableStream(table: String, columns: List<Column>): Flow<PagingData<Row>> {
+    fun getDataFromTableStream(table: String, columns: List<Column>): Flow<PagingData<Row>> {
         openedDatabase?.let { db ->
             return Pager(config =  PagingConfig(PAGE_SIZE), pagingSourceFactory = { DBPagingSource(dbHelper, db, table, columns) }).flow
         } ?: throw RuntimeException("Opened database is null.")

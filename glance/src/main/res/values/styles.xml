@@ -6,6 +6,9 @@
     <style name="GlanceTableActivityTheme" parent="Theme.MaterialComponents.NoActionBar">
     </style>
 
+    <style name="GlanceDataActivityTheme" parent="Theme.MaterialComponents.NoActionBar">
+    </style>
+
     <style name="GlanceDBActivityTheme.ProgressBar">
         <item name="colorAccent">#fff</item>
     </style>

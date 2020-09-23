@@ -16,6 +16,7 @@
 package com.glance.guolindev.logic.util
 
 import android.database.sqlite.SQLiteDatabase
+import com.glance.guolindev.exception.ColumnTypeUnsupportedException
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.Table
@@ -88,12 +89,13 @@ class DBHelper {
         val limit = "${offset},${PAGE_SIZE}"
         db.query(table, null, null, null, null, null, null, limit)?.use { cursor ->
             if (cursor.moveToFirst()) {
+                var count = 1
                 do {
                     val dataList = ArrayList<String>()
                     for (column in columns) {
                         val columnIndex = cursor.getColumnIndexOrThrow(column.name)
                         val data: String = when {
-                            column.type.equals("text", true) -> {
+                            column.type.equals("text", true) || column.type.isEmpty() -> {
                                  cursor.getString(columnIndex)
                             }
                             column.type.equals("integer", true) -> {
@@ -107,13 +109,16 @@ class DBHelper {
                             }
                             column.type.equals("null", true) -> {
                                 "<NULL>"
-                            } else -> {
-                                throw RuntimeException("The type of column ${column.name} in table ${table} is ${column.type} which is not supported.")
+                            }
+                            else -> {
+                                throw ColumnTypeUnsupportedException("The type of column ${column.name} in table $table is ${column.type} which is not supported.")
                             }
                         }
                         dataList.add(data)
                     }
-                    rowList.add(Row((dataList)))
+                    val lineNum = offset + count // This is the line number of current row, starting by 1.
+                    rowList.add(Row(lineNum, dataList))
+                    count++
                 } while (cursor.moveToNext())
             }
         }

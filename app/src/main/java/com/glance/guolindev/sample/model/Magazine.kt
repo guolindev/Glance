@@ -1,5 +1,6 @@
 package com.glance.guolindev.sample.model
 
+import org.litepal.crud.LitePalSupport
 import java.util.*
 
 /**
@@ -7,4 +8,12 @@ import java.util.*
  * @author guolin
  * @since 2020/9/2
  */
-data class Magazine(val name: String, val price: Double, val publishDate: Date, val discount: Float, val page: Int, val release: Boolean, val cover: ByteArray)
+class Magazine(
+    val name: String,
+    val price: Double,
+    val publishDate: Date,
+    val discount: Float,
+    val page: Int,
+    val release: Boolean,
+    val cover: ByteArray
+) : LitePalSupport()

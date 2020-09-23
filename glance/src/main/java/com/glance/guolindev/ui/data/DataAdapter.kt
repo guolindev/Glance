@@ -18,10 +18,13 @@ package com.glance.guolindev.ui.data
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
+import java.lang.StringBuilder
 
 /**
  * This is adapter of RecyclerView to display data from a table. Using PagingDataAdapter as parent
@@ -30,23 +33,33 @@ import com.glance.guolindev.logic.model.Row
  * @author guolin
  * @since 2020/9/22
  */
-class DataAdapter : PagingDataAdapter<Row, DataAdapter.ViewHolder>(COMPARATOR) {
+class DataAdapter(val columns: List<Column>) : PagingDataAdapter<Row, DataAdapter.ViewHolder>(COMPARATOR) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val row = getItem(position)
+        if (row != null) {
+            val builder = StringBuilder()
+            row.data.forEach {
+                builder.append(it).append(" ")
+            }
+            val itemView = holder.itemView as TextView
+            itemView.text = builder.toString()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        val textView = TextView(parent.context)
+        val holder = ViewHolder(textView)
+        return holder
     }
 
     companion object {
         private val COMPARATOR = object : DiffUtil.ItemCallback<Row>() {
             override fun areItemsTheSame(oldItem: Row, newItem: Row): Boolean =
-                oldItem == newItem
+                oldItem.lineNum == newItem.lineNum
 
             override fun areContentsTheSame(oldItem: Row, newItem: Row): Boolean =
                 oldItem == newItem

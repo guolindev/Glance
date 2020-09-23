@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.paging.PagingSource
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
+import java.lang.Exception
 
 /**
  * We need to use a DBPagingSource and inherits from PagingSource to implements the paging function with paging3 library.
@@ -33,11 +34,15 @@ class DBPagingSource(private val dbHelper: DBHelper,
                      val columns: List<Column>) : PagingSource<Int, Row>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Row> {
-        val page = params.key ?: 0 // set page 0 as default
-        val rowData = dbHelper.loadDataInTable(db, table, page, columns)
-        val prevKey = if (page > 0) page - 1 else null
-        val nextKey = if (rowData.isNotEmpty()) page + 1 else null
-        return LoadResult.Page(rowData, prevKey, nextKey)
+        return try {
+            val page = params.key ?: 0 // set page 0 as default
+            val rowData = dbHelper.loadDataInTable(db, table, page, columns)
+            val prevKey = if (page > 0) page - 1 else null
+            val nextKey = if (rowData.isNotEmpty()) page + 1 else null
+            LoadResult.Page(rowData, prevKey, nextKey)
+        } catch (e: Exception) {
+            LoadResult.Error(e)
+        }
     }
 
 }

@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.glance_library_activity_db.*
 /**
  * Databases layer of Activity, which shows all the databases file found by Glance.
  * Glance will scan the internal and external storage of current app and display all the files named end with .db.
+ *
  * @author guolin
  * @since 2020/8/25
  */

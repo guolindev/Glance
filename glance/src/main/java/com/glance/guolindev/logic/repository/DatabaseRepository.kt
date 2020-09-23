@@ -50,8 +50,8 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
      */
     suspend fun getSortedTablesInDB(dbPath: String) = withContext(Dispatchers.Default) {
         openedDatabase = dbHelper.openDatabase(dbPath)
-        openedDatabase?.let {
-            val tableList = dbHelper.getTablesInDB(it)
+        openedDatabase?.let { db ->
+            val tableList = dbHelper.getTablesInDB(db)
             tableList.sortedBy { it.name }
         } ?: emptyList()
     }

@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 
-package com.glance.guolindev.logic.model
+package com.glance.guolindev.extension
+
+import com.glance.guolindev.Glance
 
 /**
- * Data class represents a column in a table.
+ * Number extension methods.
  *
  * @author guolin
- * @since 2020/9/12
+ * @since 2020/9/24
  */
-data class Column(val name: String, val type: String) {
 
-    /**
-     * The default width of column is 100.
-     */
-    var width = 100
+/**
+ * Convert px to dp.
+ */
+fun Int.toDp(): Int {
+    val scale = Glance.context.resources.displayMetrics.density
+    return (this / scale + 0.5).toInt()
+}
 
+/**
+ * Convert dp to px.
+ */
+fun Int.toPx(): Int {
+    val scale = Glance.context.resources.displayMetrics.density
+    return (this * scale + 0.5).toInt()
 }

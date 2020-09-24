@@ -30,9 +30,9 @@ import kotlinx.coroutines.withContext
 import java.lang.RuntimeException
 
 /**
- * We set page size to 30 in pager layer. So we only load 30 items each time but after 4 times load by pager we will load once from db.
+ * We set page size to 100 in pager layer. So we only load 100 items each time but after 10 times load by pager we will load once from db.
  */
-const val PAGE_SIZE = 30
+const val PAGE_SIZE = 100
 
 /**
  * DatabaseRepository to communicate with ViewModels and database layer back end logic handler.
@@ -42,7 +42,7 @@ const val PAGE_SIZE = 30
  */
 class DatabaseRepository(private val dbHelper: DBHelper) {
 
-    var openedDatabase: SQLiteDatabase? = null
+    private var openedDatabase: SQLiteDatabase? = null
 
     /**
      * Find all tables in a specific db file represented by the [dbPath] parameter.

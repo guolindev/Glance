@@ -70,7 +70,7 @@ class DataActivity : AppCompatActivity() {
                 Resource.SUCCESS -> {
                     val columns = it.data!!
                     for (column in columns) {
-                        println("column ${column.name} type is ${column.type}")
+                        println("column ${column.name} type is ${column.type} width is ${column.width}")
                     }
                     adapter = DataAdapter(columns)
                     recyclerView.adapter = adapter
@@ -93,13 +93,9 @@ class DataActivity : AppCompatActivity() {
 
     private fun loadDataFromTable(table: String, columns: List<Column>) {
         lifecycleScope.launch {
-            viewModel.loadDataFromTable(table, columns)
-                .catch { e ->
-                    Toast.makeText(Glance.context, e.message, Toast.LENGTH_SHORT).show()
-                }
-                .collect {
-                    adapter.submitData(it)
-                }
+            viewModel.loadDataFromTable(table, columns).collect {
+                adapter.submitData(it)
+            }
         }
     }
 

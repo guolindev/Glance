@@ -21,12 +21,12 @@ class SaveDataTest {
         val reader1 = Reader("reader1", 10, mutableListOf())
         val reader2 = Reader("reader2", 20, mutableListOf())
         repeat(50) {
-            val magazine = Magazine("magazine${it}", 10.0, Date(), 1f, 100, true, ByteArray(10))
+            val magazine = Magazine("magazine${it}".repeat((1..50).random()), 10.0, Date(), 1f, 100, true, ByteArray(10))
             reader1.magazines.add(magazine)
             magazine.saveThrows()
         }
         repeat(50) {
-            val magazine = Magazine("magazine${it + 50}", 20.0, Date(), 0.5f, 200, false, ByteArray(20))
+            val magazine = Magazine("magazine${it + 50}".repeat((1..50).random()), 20.0, Date(), 0.5f, 200, false, ByteArray(20))
             reader2.magazines.add(magazine)
             magazine.saveThrows()
         }

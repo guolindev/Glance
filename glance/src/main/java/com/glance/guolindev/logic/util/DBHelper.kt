@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.glance.guolindev.logic.util
 
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Paint
 import com.glance.guolindev.exception.ColumnTypeUnsupportedException
+import com.glance.guolindev.extension.toDp
+import com.glance.guolindev.extension.toPx
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.Table
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.RuntimeException
+import kotlin.math.max
+import kotlin.math.min
 
 /**
- * We set page size to 120 in database layer.
+ * We set page size to 1000 in database layer.
  */
-const val PAGE_SIZE = 120
+const val PAGE_SIZE = 1000
 
 /**
  * Helper class with all necessary database operations.
@@ -36,6 +42,16 @@ const val PAGE_SIZE = 120
  * @since 2020/9/4
  */
 class DBHelper {
+
+    /**
+     * The max width of a column can be.
+     */
+    private val maxColumnWidth = 400.toPx()
+
+    /**
+     * The min width of a column can be.
+     */
+    private val minColumnWidth = 20.toPx()
 
     /**
      * Open a database by the passed db file path and return SQLiteDatabase instance to operate this db file.
@@ -76,6 +92,7 @@ class DBHelper {
                 } while (cursor.moveToNext())
             }
         }
+        measureColumnsWidth(db, table, columnList)
         columnList
     }
 
@@ -123,6 +140,32 @@ class DBHelper {
             }
         }
         rowList
+    }
+
+    /**
+     * Measure the proper width of each column. They should just wrap the text content, but they can't be smaller than the min width or larger than the max width.
+     */
+    private suspend fun measureColumnsWidth(db: SQLiteDatabase, table: String, columns: List<Column>) = withContext(Dispatchers.Default) {
+        val paint = Paint()
+        for (column in columns) {
+            var columnWidth = paint.measureText(column.name).toInt()
+            columnWidth = min(columnWidth, maxColumnWidth)
+            columnWidth = max(columnWidth, minColumnWidth)
+            column.width = columnWidth
+        }
+        val rowList = loadDataInTable(db, table, 0, columns) // load page 0 data
+        // we iterate the first page data and evaluate the proper width of each column.
+        for (row in rowList) {
+            row.data.forEachIndexed { index, s ->
+                val column = columns[index]
+                var columnWidth = paint.measureText(s).toInt()
+                columnWidth = min(columnWidth, maxColumnWidth)
+                columnWidth = max(columnWidth, minColumnWidth)
+                if (columnWidth > column.width) {
+                    column.width = columnWidth
+                }
+            }
+        }
     }
 
 }

@@ -16,15 +16,21 @@
 
 package com.glance.guolindev.ui.data
 
+import android.content.Context
+import android.text.TextUtils
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.glance.guolindev.R
+import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
-import java.lang.StringBuilder
 
 /**
  * This is adapter of RecyclerView to display data from a table. Using PagingDataAdapter as parent
@@ -33,27 +39,46 @@ import java.lang.StringBuilder
  * @author guolin
  * @since 2020/9/22
  */
-class DataAdapter(val columns: List<Column>) : PagingDataAdapter<Row, DataAdapter.ViewHolder>(COMPARATOR) {
+class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) : PagingDataAdapter<Row, DataAdapter.ViewHolder>(COMPARATOR) {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val rowLayout = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_row_item, parent, false) as LinearLayout
+        val param = rowLayout.layoutParams
+        param.width = rowWidth
+        for (column in columns) {
+            val textView = buildTextView(parent.context, column.width)
+            rowLayout.addView(textView)
+        }
+        return ViewHolder(rowLayout)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val row = getItem(position)
         if (row != null) {
-            val builder = StringBuilder()
-            row.data.forEach {
-                builder.append(it).append(" ")
+            val rowLayout = holder.itemView as LinearLayout
+            for (i in (0 until rowLayout.childCount)) {
+                val textView = rowLayout.getChildAt(i) as TextView
+                textView.text = row.data[i]
             }
-            val itemView = holder.itemView as TextView
-            itemView.text = builder.toString()
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val textView = TextView(parent.context)
-        val holder = ViewHolder(textView)
-        return holder
+    /**
+     * Build a TextView widget as a table cell to show data in a row.
+     */
+    private fun buildTextView(context: Context, width: Int): TextView {
+        val textView = TextView(context)
+        textView.gravity = Gravity.CENTER_VERTICAL
+        // Actually each column has 20dp extra space, but we only use 10 in padding.
+        // This makes each column has more space to show their content before ellipsized.
+        textView.setPadding(5.dp, 0, 5.dp, 0)
+        textView.setSingleLine()
+        textView.ellipsize = TextUtils.TruncateAt.END
+        val textViewParam = LinearLayout.LayoutParams(width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
+        textView.layoutParams = textViewParam
+        return textView
     }
 
     companion object {

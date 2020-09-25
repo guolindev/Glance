@@ -26,17 +26,10 @@ import com.glance.guolindev.Glance
  */
 
 /**
- * Convert px to dp.
- */
-fun Int.toDp(): Int {
-    val scale = Glance.context.resources.displayMetrics.density
-    return (this / scale + 0.5).toInt()
-}
-
-/**
  * Convert dp to px.
  */
-fun Int.toPx(): Int {
-    val scale = Glance.context.resources.displayMetrics.density
-    return (this * scale + 0.5).toInt()
-}
+val Int.dp: Int
+    get() {
+        val scale = Glance.context.resources.displayMetrics.density
+        return (this * scale + 0.5).toInt()
+    }

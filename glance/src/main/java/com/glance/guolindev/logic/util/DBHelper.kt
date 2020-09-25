@@ -17,23 +17,23 @@
 package com.glance.guolindev.logic.util
 
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Paint
+import android.widget.TextView
+import com.glance.guolindev.Glance
 import com.glance.guolindev.exception.ColumnTypeUnsupportedException
-import com.glance.guolindev.extension.toDp
-import com.glance.guolindev.extension.toPx
+import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.Table
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.RuntimeException
 import kotlin.math.max
 import kotlin.math.min
 
 /**
- * We set page size to 1000 in database layer.
+ * We set a quite large number of page in database layer.
+ * Because query 10k records is very fast and we can have a more accurate measure for each column width.
  */
-const val PAGE_SIZE = 1000
+const val PAGE_SIZE = 10000
 
 /**
  * Helper class with all necessary database operations.
@@ -46,12 +46,12 @@ class DBHelper {
     /**
      * The max width of a column can be.
      */
-    private val maxColumnWidth = 400.toPx()
+    private val maxColumnWidth = 300.dp
 
     /**
      * The min width of a column can be.
      */
-    private val minColumnWidth = 20.toPx()
+    private val minColumnWidth = 20.dp
 
     /**
      * Open a database by the passed db file path and return SQLiteDatabase instance to operate this db file.
@@ -146,7 +146,7 @@ class DBHelper {
      * Measure the proper width of each column. They should just wrap the text content, but they can't be smaller than the min width or larger than the max width.
      */
     private suspend fun measureColumnsWidth(db: SQLiteDatabase, table: String, columns: List<Column>) = withContext(Dispatchers.Default) {
-        val paint = Paint()
+        val paint = TextView(Glance.context).paint
         for (column in columns) {
             var columnWidth = paint.measureText(column.name).toInt()
             columnWidth = min(columnWidth, maxColumnWidth)

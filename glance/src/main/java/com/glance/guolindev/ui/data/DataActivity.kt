@@ -25,13 +25,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.glance.guolindev.Glance
 import com.glance.guolindev.R
-import com.glance.guolindev.exception.ColumnTypeUnsupportedException
+import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
 import kotlinx.android.synthetic.main.glance_library_activity_table.*
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -69,10 +67,13 @@ class DataActivity : AppCompatActivity() {
             when (it.status) {
                 Resource.SUCCESS -> {
                     val columns = it.data!!
+                    var rowWidth = 0
                     for (column in columns) {
+                        rowWidth += column.width
                         println("column ${column.name} type is ${column.type} width is ${column.width}")
                     }
-                    adapter = DataAdapter(columns)
+                    rowWidth += columns.size * 20.dp // we always have 20dp extra space for each column. 5dp for start. 15dp for end.
+                    adapter = DataAdapter(columns, rowWidth)
                     recyclerView.adapter = adapter
                     loadDataFromTable(table, columns)
                 }

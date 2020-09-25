@@ -30,9 +30,10 @@ import kotlinx.coroutines.withContext
 import java.lang.RuntimeException
 
 /**
- * We set page size to 100 in pager layer. So we only load 100 items each time but after 10 times load by pager we will load once from db.
+ * We set page size to 50 in pager layer. So we only load 50 items by each page.
+ * And we only need to access to database only after a lot of pages, since the page in database is quite large.
  */
-const val PAGE_SIZE = 100
+const val PAGE_SIZE = 50
 
 /**
  * DatabaseRepository to communicate with ViewModels and database layer back end logic handler.

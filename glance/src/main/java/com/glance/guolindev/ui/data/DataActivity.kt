@@ -29,9 +29,13 @@ import com.glance.guolindev.R
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
+import kotlinx.android.synthetic.main.glance_library_activity_data.*
 import kotlinx.android.synthetic.main.glance_library_activity_table.*
+import kotlinx.android.synthetic.main.glance_library_activity_table.recyclerView
+import kotlinx.android.synthetic.main.glance_library_activity_table.toolbar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 /**
  * Data layer of Activity, which shows data from a table by page.
@@ -66,16 +70,21 @@ class DataActivity : AppCompatActivity() {
         viewModel.columnsLiveData.observe(this) {
             when (it.status) {
                 Resource.SUCCESS -> {
-                    val columns = it.data!!
-                    var rowWidth = 0
-                    for (column in columns) {
-                        rowWidth += column.width
-                        println("column ${column.name} type is ${column.type} width is ${column.width}")
+                    thread {
+                        val columns = it.data!!
+                        var rowWidth = 0
+                        for (column in columns) {
+                            rowWidth += column.width
+                        }
+                        rowWidth += columns.size * 20.dp // we always have 20dp extra space for each column. 5dp for start. 15dp for end.
+                        recyclerView.post {
+                            // Make sure we are back to the main thread and we can get horizontalScrollView width now.
+                            rowWidth = rowWidth.coerceAtLeast(horizontalScrollView.width)
+                            adapter = DataAdapter(columns, rowWidth)
+                            recyclerView.adapter = adapter
+                            loadDataFromTable(table, columns)
+                        }
                     }
-                    rowWidth += columns.size * 20.dp // we always have 20dp extra space for each column. 5dp for start. 15dp for end.
-                    adapter = DataAdapter(columns, rowWidth)
-                    recyclerView.adapter = adapter
-                    loadDataFromTable(table, columns)
                 }
             }
         }

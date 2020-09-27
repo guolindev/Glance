@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.glance.guolindev.view.TableRowLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="30dp">
 
-</LinearLayout>
+</com.glance.guolindev.view.TableRowLayout>

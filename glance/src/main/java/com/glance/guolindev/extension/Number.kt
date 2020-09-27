@@ -33,3 +33,15 @@ val Int.dp: Int
         val scale = Glance.context.resources.displayMetrics.density
         return (this * scale + 0.5).toInt()
     }
+
+val Float.dp: Float
+    get() {
+        val scale = Glance.context.resources.displayMetrics.density
+        return (this * scale + 0.5).toFloat()
+    }
+
+val Double.dp: Double
+    get() {
+        val scale = Glance.context.resources.displayMetrics.density
+        return this * scale + 0.5
+    }

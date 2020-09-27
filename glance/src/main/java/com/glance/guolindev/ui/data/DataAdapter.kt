@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -42,14 +43,17 @@ import com.glance.guolindev.view.TableRowLayout
  */
 class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) : PagingDataAdapter<Row, DataAdapter.ViewHolder>(COMPARATOR) {
 
+    lateinit var context: Context
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val rowLayout = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_row_item, parent, false) as TableRowLayout
+        if (!::context.isInitialized) context = parent.context
+        val rowLayout = LayoutInflater.from(context).inflate(R.layout.glance_library_row_item, parent, false) as TableRowLayout
         val param = rowLayout.layoutParams
         param.width = rowWidth
         for (column in columns) {
-            val tableCellView = buildTableCellView(parent.context, column.width)
+            val tableCellView = buildTableCellView(column.width)
             rowLayout.addView(tableCellView)
         }
         return ViewHolder(rowLayout)
@@ -61,10 +65,15 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
             val isLastRow = position == itemCount - 1
             val rowLayout = holder.itemView as TableRowLayout
             rowLayout.shouldDrawBottomBorder = isLastRow // We only draw the bottom border when it's last row of the table.
+            val backgroundColorRes = if (position % 2 == 0) {
+                R.color.glance_library_table_even_row_bg
+            } else {
+                R.color.glance_library_table_odd_row_bg
+            }
+            rowLayout.setBackgroundColor(ContextCompat.getColor(context, backgroundColorRes))
             for (i in (0 until rowLayout.childCount)) {
                 val tableCellView = rowLayout.getChildAt(i) as TableCellView
-                tableCellView.isFirstCell = i == 0 // This is first cell of the row or not
-                tableCellView.isLastCell = i == rowLayout.childCount - 1 // This is last cell of the row or not
+                tableCellView.isFirstCell = i == 0 // Indicate it's first cell of the row or not
                 tableCellView.text = row.data[i]
             }
         }
@@ -73,7 +82,7 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
     /**
      * Build a TextView widget as a table cell to show data in a row.
      */
-    private fun buildTableCellView(context: Context, width: Int): TableCellView {
+    private fun buildTableCellView(width: Int): TableCellView {
         val tableCellView = TableCellView(context)
         tableCellView.gravity = Gravity.CENTER_VERTICAL
         // Actually each column has 20dp extra space, but we only use 10 in padding.
@@ -81,6 +90,7 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
         tableCellView.setPadding(5.dp, 0, 5.dp, 0)
         tableCellView.setSingleLine()
         tableCellView.ellipsize = TextUtils.TruncateAt.END
+        tableCellView.setTextColor(ContextCompat.getColor(context, R.color.glance_library_table_text))
         val layoutParam = LinearLayout.LayoutParams(width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
         tableCellView.layoutParams = layoutParam
         return tableCellView

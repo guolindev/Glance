@@ -18,10 +18,12 @@ package com.glance.guolindev.view
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import com.glance.guolindev.R
+import com.glance.guolindev.extension.dp
 
 /**
  * Custom view to represent a row of the table. Draw the top and bottom border for the row when necessary.
@@ -34,7 +36,7 @@ class TableRowLayout(context: Context, attrs: AttributeSet? = null) : LinearLayo
     /**
      * Use this paint to draw border of table.
      */
-    private val paint = Paint()
+    private val borderPaint = Paint()
 
     /**
      * Indicate if we should draw the bottom border of the row.
@@ -45,13 +47,14 @@ class TableRowLayout(context: Context, attrs: AttributeSet? = null) : LinearLayo
 
     init {
         setWillNotDraw(false) // Layout may not call onDraw(), so we need to disable that.
-        paint.color = Color.WHITE
+        borderPaint.color = ContextCompat.getColor(context, R.color.glance_library_table_border)
+        borderPaint.strokeWidth = 1f.dp
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawLine(0f, 0f, width.toFloat(), 0f, paint)
+        canvas.drawLine(0f, 0f, width.toFloat(), 0f, borderPaint)
         if (shouldDrawBottomBorder) {
-            canvas.drawLine(0f, height.toFloat() - 1, width.toFloat(), height.toFloat() - 1, paint)
+            canvas.drawLine(0f, height.toFloat() - 1, width.toFloat(), height.toFloat() - 1, borderPaint)
         }
         super.onDraw(canvas)
     }

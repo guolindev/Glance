@@ -19,40 +19,41 @@ package com.glance.guolindev.view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import com.glance.guolindev.R
+import com.glance.guolindev.extension.dp
 
 
 /**
- * Custom view to represent a table cell. Draw the left and right border for the cell when necessary.
+ * Custom view to represent a table cell. Draw the border(only left border is needed) for the cell when necessary.
  *
  * @author guolin
  * @since 2020/9/27
  */
 class TableCellView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
 
-    init {
-        paint.color = Color.WHITE
-    }
+    /**
+     * Use this paint to draw border of table.
+     */
+    private val borderPaint = Paint()
 
     /**
      * Indicate current cell the is first cell of the row or not.
      */
     var isFirstCell = false
 
-    /**
-     * Indicate current cell the is last cell of the row or not.
-     */
-    var isLastCell = false
+    init {
+        borderPaint.color = ContextCompat.getColor(context, R.color.glance_library_table_border)
+        borderPaint.strokeWidth = 1f.dp
+    }
 
     override fun onDraw(canvas: Canvas) {
         if (!isFirstCell) {
             // We don't draw the left border if it's first cell.
-            canvas.drawLine(0f, 0f, 0f, height.toFloat(), paint)
-        }
-        if (!isLastCell) {
-            // We don't draw the right border if it's last cell.
-            canvas.drawLine(width.toFloat(), 0f, width.toFloat(), height.toFloat(), paint)
+            canvas.drawLine(0f, 0f, 0f, height.toFloat(), borderPaint)
         }
         super.onDraw(canvas)
     }

@@ -21,11 +21,11 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
 
     </HorizontalScrollView>
 
-<!--    <ProgressBar
+    <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,19 +59,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-    
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/loadingGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="progressBar"
-        />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/contentGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="recyclerView"
-        />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

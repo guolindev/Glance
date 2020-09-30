@@ -22,12 +22,15 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glance.guolindev.R
 import com.glance.guolindev.extension.dp
@@ -74,22 +77,7 @@ class DataActivity : AppCompatActivity() {
         viewModel.columnsLiveData.observe(this) {
             when (it.status) {
                 Resource.SUCCESS -> {
-                    thread {
-                        val columns = it.data!!
-                        var rowWidth = 0
-                        for (column in columns) {
-                            rowWidth += column.width
-                        }
-                        rowWidth += columns.size * 20.dp // we always have 20dp extra space for each column. 5dp for start. 15dp for end.
-                        recyclerView.post {
-                            // Make sure we are back to the main thread and we can get horizontalScrollView width now.
-                            rowWidth = rowWidth.coerceAtLeast(horizontalScrollView.width)
-                            buildRowTitle(columns, rowWidth)
-                            adapter = DataAdapter(columns, rowWidth)
-                            recyclerView.adapter = adapter
-                            loadDataFromTable(table, columns)
-                        }
-                    }
+                    initAdapter(table, it.data!!)
                 }
                 Resource.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
@@ -110,7 +98,44 @@ class DataActivity : AppCompatActivity() {
     }
 
     /**
-     * Begin to load table from table with the specific columns.
+     * Init the adapter for displaying data in RecyclerView.
+     */
+    private fun initAdapter(table: String, columns: List<Column>) {
+        // It may cost some time for calculating row width, so we put it into thread.
+        thread {
+            var rowWidth = 0
+            for (column in columns) {
+                rowWidth += column.width
+            }
+            rowWidth += columns.size * 20.dp // we always have 20dp extra space for each column. 5dp for start. 15dp for end.
+            recyclerView.post {
+                // Make sure we are back to the main thread and we can get horizontalScrollView width now.
+                rowWidth = rowWidth.coerceAtLeast(horizontalScrollView.width)
+                buildRowTitle(columns, rowWidth)
+                adapter = DataAdapter(columns, rowWidth)
+                val footerAdapter = DataFooterAdapter(horizontalScrollView.width) {
+                    adapter.itemCount
+                }
+                recyclerView.adapter = ConcatAdapter(adapter, footerAdapter)
+                adapter.addLoadStateListener { loadState ->
+                    when (loadState.refresh) {
+                        is LoadState.NotLoading -> {
+                            horizontalScrollView.visibility = View.VISIBLE
+                            progressBar.visibility = View.INVISIBLE
+                        }
+                        is LoadState.Loading -> {
+                            horizontalScrollView.visibility = View.INVISIBLE
+                            progressBar.visibility = View.VISIBLE
+                        }
+                    }
+                }
+                loadDataFromTable(table, columns)
+            }
+        }
+    }
+
+    /**
+     * Begin to load data from table with the specific columns.
      */
     private fun loadDataFromTable(table: String, columns: List<Column>) {
         lifecycleScope.launch {

@@ -38,13 +38,6 @@ class TableRowLayout(context: Context, attrs: AttributeSet? = null) : LinearLayo
      */
     private val borderPaint = Paint()
 
-    /**
-     * Indicate if we should draw the bottom border of the row.
-     * We shouldn't draw the bottom border of a row and draw the top border of next row, otherwise the border will be too thick.
-     * Control that by logic.
-     */
-    var shouldDrawBottomBorder = false
-
     init {
         setWillNotDraw(false) // Layout may not call onDraw(), so we need to disable that.
         borderPaint.color = ContextCompat.getColor(context, R.color.glance_library_table_border)
@@ -52,10 +45,7 @@ class TableRowLayout(context: Context, attrs: AttributeSet? = null) : LinearLayo
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawLine(0f, 0f, width.toFloat(), 0f, borderPaint)
-        if (shouldDrawBottomBorder) {
-            canvas.drawLine(0f, height.toFloat() - 1, width.toFloat(), height.toFloat() - 1, borderPaint)
-        }
+        canvas.drawLine(0f, height.toFloat() - 0.5f, width.toFloat(), height.toFloat() - 0.5f, borderPaint)
         super.onDraw(canvas)
     }
 

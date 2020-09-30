@@ -53,8 +53,10 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
         val param = rowLayout.layoutParams
         param.width = rowWidth
         for (column in columns) {
-            val tableCellView = buildTableCellView(column.width)
-            rowLayout.addView(tableCellView)
+            val tableCellView = buildTableCellView()
+            // We let each column has 20dp extra space, to make it look better.
+            val layoutParam = LinearLayout.LayoutParams(column.width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
+            rowLayout.addView(tableCellView, layoutParam)
         }
         return ViewHolder(rowLayout)
     }
@@ -62,9 +64,7 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val row = getItem(position)
         if (row != null) {
-            val isLastRow = position == itemCount - 1
             val rowLayout = holder.itemView as TableRowLayout
-            rowLayout.shouldDrawBottomBorder = isLastRow // We only draw the bottom border when it's last row of the table.
             val backgroundColorRes = if (position % 2 == 0) {
                 R.color.glance_library_table_even_row_bg
             } else {
@@ -82,7 +82,7 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
     /**
      * Build a TextView widget as a table cell to show data in a row.
      */
-    private fun buildTableCellView(width: Int): TableCellView {
+    private fun buildTableCellView(): TableCellView {
         val tableCellView = TableCellView(context)
         tableCellView.gravity = Gravity.CENTER_VERTICAL
         // Actually each column has 20dp extra space, but we only use 10 in padding.
@@ -91,8 +91,7 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
         tableCellView.setSingleLine()
         tableCellView.ellipsize = TextUtils.TruncateAt.END
         tableCellView.setTextColor(ContextCompat.getColor(context, R.color.glance_library_table_text))
-        val layoutParam = LinearLayout.LayoutParams(width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
-        tableCellView.layoutParams = layoutParam
+
         return tableCellView
     }
 

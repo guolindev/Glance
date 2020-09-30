@@ -27,11 +27,25 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            />
+            android:orientation="vertical">
+
+            <com.glance.guolindev.view.TableRowLayout
+                android:id="@+id/rowTitleLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@color/glance_library_table_even_row_bg"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
 
     </HorizontalScrollView>
 

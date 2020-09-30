@@ -18,10 +18,14 @@ package com.glance.guolindev.ui.data
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +33,8 @@ import com.glance.guolindev.R
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
+import com.glance.guolindev.view.TableCellView
 import kotlinx.android.synthetic.main.glance_library_activity_data.*
-import kotlinx.android.synthetic.main.glance_library_activity_table.*
 import kotlinx.android.synthetic.main.glance_library_activity_table.recyclerView
 import kotlinx.android.synthetic.main.glance_library_activity_table.toolbar
 import kotlinx.coroutines.flow.collect
@@ -80,11 +84,15 @@ class DataActivity : AppCompatActivity() {
                         recyclerView.post {
                             // Make sure we are back to the main thread and we can get horizontalScrollView width now.
                             rowWidth = rowWidth.coerceAtLeast(horizontalScrollView.width)
+                            buildRowTitle(columns, rowWidth)
                             adapter = DataAdapter(columns, rowWidth)
                             recyclerView.adapter = adapter
                             loadDataFromTable(table, columns)
                         }
                     }
+                }
+                Resource.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -101,12 +109,42 @@ class DataActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Begin to load table from table with the specific columns.
+     */
     private fun loadDataFromTable(table: String, columns: List<Column>) {
         lifecycleScope.launch {
             viewModel.loadDataFromTable(table, columns).collect {
                 adapter.submitData(it)
             }
         }
+    }
+
+    /**
+     * Build a TableRowLayout as a row to should the columns of a table as title.
+     */
+    private fun buildRowTitle(columns: List<Column>, rowWidth: Int) {
+        val param = rowTitleLayout.layoutParams
+        param.width = rowWidth
+        columns.forEachIndexed { index, column ->
+            val tableCellView = buildTableCellView(column)
+            tableCellView.isFirstCell = index == 0 // Indicate it's first cell of the row or not
+            // We let each column has 20dp extra space, to make it look better.
+            val layoutParam = LinearLayout.LayoutParams(column.width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
+            rowTitleLayout.addView(tableCellView, layoutParam)
+        }
+    }
+
+    /**
+     * Build a TableCellView widget as a table cell to show data in title.
+     */
+    private fun buildTableCellView(column: Column): TableCellView {
+        val tableCellView = TableCellView(this)
+        tableCellView.gravity = Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL
+        tableCellView.setTextColor(ContextCompat.getColor(this, R.color.glance_library_table_text))
+        tableCellView.typeface = Typeface.DEFAULT_BOLD
+        tableCellView.text = column.name
+        return tableCellView
     }
 
     companion object {

@@ -33,7 +33,7 @@ import com.glance.guolindev.extension.dp
  * @author guolin
  * @since 2020/9/27
  */
-class TableCellView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
+class TableCellView(context: Context, attrs: AttributeSet? = null) : AppCompatTextView(context, attrs) {
 
     /**
      * Use this paint to draw border of table.

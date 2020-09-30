@@ -50,7 +50,7 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
         val view = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_db_item, parent, false)
         val holder = ViewHolder(view)
         holder.itemView.setOnClickListener {
-            val position = holder.adapterPosition
+            val position = holder.bindingAdapterPosition
             val dbFile = dbList[position]
             if (!dbFile.exists()) {
                 Toast.makeText(parent.context, "This file doesn't exist anymore.", Toast.LENGTH_SHORT).show()

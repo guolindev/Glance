@@ -33,7 +33,7 @@ import kotlin.math.min
  * We set a quite large number of page in database layer.
  * 1001 is a weird number, but it can let us have a more accurate measure for each column width.
  * If the column is integer with increment number, 1001 can measure the enough space for 9999 records.
- * 1000 is more proper number, but if the record based on 0, it can only measure the space for 999 records.
+ * 1000 is more decent number, but if the record based on 0, it can only measure the space for 999 records.
  */
 const val PAGE_SIZE = 1001
 

@@ -33,7 +33,12 @@ import kotlinx.android.synthetic.main.glance_library_data_footer.view.*
  */
 class DataFooterAdapter(private val layoutWidth: Int, private val block: () -> Int) : RecyclerView.Adapter<DataFooterAdapter.ViewHolder>() {
 
-    lateinit var context: Context
+    private lateinit var context: Context
+
+    /**
+     * We do not display footer at first. Only when main data are loaded, we show the footer.
+     */
+    private var displayFooter = false
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val msgText = itemView.msgText as TextView
@@ -56,6 +61,14 @@ class DataFooterAdapter(private val layoutWidth: Int, private val block: () -> I
         holder.msgText.text = String.format(text, recordCount)
     }
 
-    override fun getItemCount() = 0
+    override fun getItemCount() = if (displayFooter) 1 else 0
+
+    /**
+     * Display the footer to show how many records are loaded.
+     */
+    fun displayFooter() {
+        displayFooter = true
+        notifyDataSetChanged()
+    }
 
 }

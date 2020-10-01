@@ -54,7 +54,15 @@ class DataActivity : AppCompatActivity() {
 
     private val viewModel by lazy { ViewModelProvider(this, DataViewModelFactory()).get(DataViewModel::class.java) }
 
+    /**
+     * The adapter for the main data of table.
+     */
     private lateinit var adapter: DataAdapter
+
+    /**
+     * The adapter for the footer view.
+     */
+    private lateinit var footerAdapter: DataFooterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,9 +119,9 @@ class DataActivity : AppCompatActivity() {
             recyclerView.post {
                 // Make sure we are back to the main thread and we can get horizontalScrollView width now.
                 rowWidth = rowWidth.coerceAtLeast(horizontalScrollView.width)
-                buildRowTitle(columns, rowWidth)
+                buildTableTitle(columns, rowWidth)
                 adapter = DataAdapter(columns, rowWidth)
-                val footerAdapter = DataFooterAdapter(horizontalScrollView.width) {
+                footerAdapter = DataFooterAdapter(horizontalScrollView.width) {
                     adapter.itemCount
                 }
                 recyclerView.adapter = ConcatAdapter(adapter, footerAdapter)
@@ -122,6 +130,7 @@ class DataActivity : AppCompatActivity() {
                         is LoadState.NotLoading -> {
                             horizontalScrollView.visibility = View.VISIBLE
                             progressBar.visibility = View.INVISIBLE
+                            footerAdapter.displayFooter()
                         }
                         is LoadState.Loading -> {
                             horizontalScrollView.visibility = View.INVISIBLE
@@ -141,14 +150,16 @@ class DataActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.loadDataFromTable(table, columns).collect {
                 adapter.submitData(it)
+                // This line will never reach. Don't do anything below
             }
+            // This line will never reach. Don't do anything below
         }
     }
 
     /**
-     * Build a TableRowLayout as a row to should the columns of a table as title.
+     * Build a TableRowLayout as a row to show the columns of a table as title.
      */
-    private fun buildRowTitle(columns: List<Column>, rowWidth: Int) {
+    private fun buildTableTitle(columns: List<Column>, rowWidth: Int) {
         val param = rowTitleLayout.layoutParams
         param.width = rowWidth
         columns.forEachIndexed { index, column ->

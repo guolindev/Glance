@@ -64,6 +64,11 @@ class DataActivity : AppCompatActivity() {
      */
     private lateinit var footerAdapter: DataFooterAdapter
 
+    /**
+     * Indicates the load is started or not.
+     */
+    private var loadStarted = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.glance_library_activity_data)
@@ -117,26 +122,37 @@ class DataActivity : AppCompatActivity() {
             }
             rowWidth += columns.size * 20.dp // we always have 20dp extra space for each column. 5dp for start. 15dp for end.
             recyclerView.post {
-                // Make sure we are back to the main thread and we can get horizontalScrollView width now.
-                rowWidth = rowWidth.coerceAtLeast(horizontalScrollView.width)
+                // Make sure we are back to the main thread and we can get the width of HorizontalScroller now.
+                rowWidth = rowWidth.coerceAtLeast(horizontalScroller.width)
                 buildTableTitle(columns, rowWidth)
                 adapter = DataAdapter(columns, rowWidth)
-                footerAdapter = DataFooterAdapter(horizontalScrollView.width) {
+                footerAdapter = DataFooterAdapter(rowWidth, horizontalScroller.width) {
                     adapter.itemCount
                 }
+                // Concat DataAdapter and DataFooterAdapter which can show how many records loaded at bottom.
                 recyclerView.adapter = ConcatAdapter(adapter, footerAdapter)
                 adapter.addLoadStateListener { loadState ->
                     when (loadState.refresh) {
                         is LoadState.NotLoading -> {
-                            horizontalScrollView.visibility = View.VISIBLE
+                            horizontalScroller.visibility = View.VISIBLE
                             progressBar.visibility = View.INVISIBLE
-                            footerAdapter.displayFooter()
+                            if (loadStarted) {
+                                // This case may be invoked before loading start.
+                                // We only display footer view after first loading by paging3.
+                                // Otherwise RecyclerView will scroll to the bottom when load finished which we don't want to see.
+                                footerAdapter.displayFooter()
+                            }
                         }
                         is LoadState.Loading -> {
-                            horizontalScrollView.visibility = View.INVISIBLE
+                            horizontalScroller.visibility = View.INVISIBLE
                             progressBar.visibility = View.VISIBLE
                         }
                     }
+                }
+                // Listener the scroll amount by the HorizontalScroller and notify it to DataFooterAdapter
+                // to make the text on footer view showed in center.
+                horizontalScroller.setScrollObserver {
+                    footerAdapter.notifyScrollXChanged(it)
                 }
                 loadDataFromTable(table, columns)
             }
@@ -149,6 +165,7 @@ class DataActivity : AppCompatActivity() {
     private fun loadDataFromTable(table: String, columns: List<Column>) {
         lifecycleScope.launch {
             viewModel.loadDataFromTable(table, columns).collect {
+                loadStarted = true
                 adapter.submitData(it)
                 // This line will never reach. Don't do anything below
             }

@@ -17,8 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
+    <com.glance.guolindev.view.HorizontalScroller
+        android:id="@+id/horizontalScroller"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="none"
@@ -47,7 +47,7 @@
 
         </LinearLayout>
 
-    </HorizontalScrollView>
+    </com.glance.guolindev.view.HorizontalScroller>
 
     <ProgressBar
         android:id="@+id/progressBar"

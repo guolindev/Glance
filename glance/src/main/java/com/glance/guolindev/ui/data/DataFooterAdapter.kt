@@ -18,12 +18,11 @@ package com.glance.guolindev.ui.data
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
-import kotlinx.android.synthetic.main.glance_library_data_footer.view.*
+import com.glance.guolindev.view.FooterTextView
 
 /**
  * The footer adapter to show how many records are loaded.
@@ -31,7 +30,7 @@ import kotlinx.android.synthetic.main.glance_library_data_footer.view.*
  * @author guolin
  * @since 2020/9/30
  */
-class DataFooterAdapter(private val layoutWidth: Int, private val block: () -> Int) : RecyclerView.Adapter<DataFooterAdapter.ViewHolder>() {
+class DataFooterAdapter(private val layoutWidth: Int, private val screenWidth: Int, private val block: () -> Int) : RecyclerView.Adapter<DataFooterAdapter.ViewHolder>() {
 
     private lateinit var context: Context
 
@@ -40,13 +39,17 @@ class DataFooterAdapter(private val layoutWidth: Int, private val block: () -> I
      */
     private var displayFooter = false
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val msgText = itemView.msgText as TextView
-    }
+    /**
+     * This is the widget to show how many records are loaded.
+     */
+    private lateinit var footerTextView: FooterTextView
+
+    class ViewHolder(itemView: TextView) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (!::context.isInitialized) context = parent.context
-        val itemView = LayoutInflater.from(context).inflate(R.layout.glance_library_data_footer, parent, false)
+        val itemView = LayoutInflater.from(context).inflate(R.layout.glance_library_data_footer, parent, false) as FooterTextView
+        itemView.screenWidth = screenWidth.toFloat()
         itemView.layoutParams.width = layoutWidth
         return ViewHolder(itemView)
     }
@@ -58,7 +61,10 @@ class DataFooterAdapter(private val layoutWidth: Int, private val block: () -> I
         } else {
             context.resources.getString(R.string.glance_library_record_loaded)
         }
-        holder.msgText.text = String.format(text, recordCount)
+        if (!::footerTextView.isInitialized) {
+            footerTextView = holder.itemView as FooterTextView
+        }
+        footerTextView.text = String.format(text, recordCount)
     }
 
     override fun getItemCount() = if (displayFooter) 1 else 0
@@ -67,8 +73,20 @@ class DataFooterAdapter(private val layoutWidth: Int, private val block: () -> I
      * Display the footer to show how many records are loaded.
      */
     fun displayFooter() {
-        displayFooter = true
-        notifyDataSetChanged()
+        if (!displayFooter) {
+            // Once footer is displayed, we don't execute it anymore for better performance.
+            displayFooter = true
+            notifyDataSetChanged()
+        }
+    }
+
+    /**
+     * Notify FooterTextView the horizontal scroll amount to invalidate the view.
+     */
+    fun notifyScrollXChanged(scrollX: Float){
+        if (::footerTextView.isInitialized) {
+            footerTextView.notifyScrollXChanged(scrollX)
+        }
     }
 
 }

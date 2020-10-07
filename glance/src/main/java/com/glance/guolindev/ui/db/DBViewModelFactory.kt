@@ -28,7 +28,8 @@ import com.glance.guolindev.logic.util.ServiceLocator
  */
 class DBViewModelFactory : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return DBViewModel(ServiceLocator.provideDBRepository()) as T
     }
 

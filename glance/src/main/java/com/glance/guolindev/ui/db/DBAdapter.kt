@@ -16,17 +16,21 @@
 
 package com.glance.guolindev.ui.db
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.extension.dp
 import com.glance.guolindev.extension.exists
 import com.glance.guolindev.extension.isValidDBFile
 import com.glance.guolindev.logic.model.DBFile
 import com.glance.guolindev.ui.table.TableActivity
+import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.glance_library_db_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,7 +43,10 @@ import java.util.*
  */
 class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapter.ViewHolder>() {
 
+    lateinit var context: Context
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val storageLayout: MaterialCardView = itemView.storageLayout
         val storageText: TextView = itemView.storageText
         val dbNameText: TextView = itemView.dbNameText
         val dbPathText: TextView = itemView.dbPathText
@@ -47,6 +54,7 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        if (!::context.isInitialized) context = parent.context
         val view = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_db_item, parent, false)
         val holder = ViewHolder(view)
         holder.itemView.setOnClickListener {
@@ -65,13 +73,25 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (position == 0 || position == dbList.size - 1) {
+            // We give first/last itemView the extra 10dp top/bottom margin to make the space between each item equal.
+            val itemView = holder.itemView
+            val params = itemView.layoutParams as RecyclerView.LayoutParams
+            if (position == 0) {
+                params.topMargin = params.topMargin + 10.dp
+            } else {
+                params.bottomMargin = params.bottomMargin + 10.dp
+            }
+        }
         val dbFile = dbList[position]
         holder.dbNameText.text = dbFile.name
         holder.dbPathText.text = dbFile.path
         if (dbFile.internal) {
             holder.storageText.setText(R.string.glance_library_internal_storage)
+            holder.storageLayout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.glance_library_db_card_internal_storage_db))
         } else {
             holder.storageText.setText(R.string.glance_library_external_storage)
+            holder.storageLayout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.glance_library_db_card_external_storage_db))
         }
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
         val modifyTime = "Last modified ${simpleDateFormat.format(dbFile.modifyTime)}"

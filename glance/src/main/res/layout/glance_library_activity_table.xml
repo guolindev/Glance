@@ -30,7 +30,7 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="@style/GlanceDBActivityTheme.ProgressBar"
+        android:theme="@style/GlanceActivityTheme.ProgressBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

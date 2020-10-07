@@ -4,13 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
     tools:context="com.glance.guolindev.ui.db.DBActivity">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/glance_library_toolbar_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="?attr/actionBarSize"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:ellipsize="end"
@@ -30,7 +38,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:padding="10dp"
-        android:theme="@style/GlanceDBActivityTheme.ProgressBar"
+        android:theme="@style/GlanceActivityTheme.ProgressBar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"

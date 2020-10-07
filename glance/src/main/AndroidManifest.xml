@@ -7,8 +7,7 @@
         <activity
             android:name=".ui.db.DBActivity"
             android:label="Glance"
-            android:exported="false"
-            android:theme="@style/GlanceDBActivityTheme">
+            android:theme="@style/GlanceActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -18,11 +17,11 @@
         <activity
             android:name=".ui.table.TableActivity"
             android:exported="false"
-            android:theme="@style/GlanceTableActivityTheme" />
+            android:theme="@style/GlanceActivityTheme" />
 
         <activity android:name=".ui.data.DataActivity"
             android:exported="false"
-            android:theme="@style/GlanceDataActivityTheme" />
+            android:theme="@style/GlanceActivityTheme" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

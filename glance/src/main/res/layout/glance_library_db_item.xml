@@ -4,26 +4,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
-    android:layout_marginBottom="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     app:cardCornerRadius="20dp"
-    app:cardBackgroundColor="#2f2f2f"
+    app:cardBackgroundColor="@color/glance_library_db_card_bg"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="18dp"
+        >
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/storageLayout"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:cardBackgroundColor="#4e462f"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="20dp"
+            tools:cardBackgroundColor="@color/glance_library_db_card_storage_db"
+            >
 
             <TextView
                 android:id="@+id/storageText"
@@ -31,9 +37,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textColor="#ffcc30"
-                android:textSize="14sp"
-                tools:text="external\nstorage" />
+                android:textColor="@color/glance_library_db_card_storage_text"
+                android:textSize="14dp"
+                tools:text="external\nstorage"
+                tools:ignore="SpUsage" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -49,7 +56,7 @@
                 android:id="@+id/dbNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
+                android:textColor="@color/glance_library_db_card_text_primary"
                 android:textSize="18sp"
                 tools:text="sample.db" />
 
@@ -58,9 +65,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:maxLines="3"
                 android:ellipsize="end"
-                android:textColor="#939ca3"
+                android:textColor="@color/glance_library_db_card_text_secondary"
                 android:textSize="12sp"
                 tools:text="/data/data/com.example.glance/databases/sample.db"/>
 
@@ -69,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:textColor="#939ca3"
+                android:textColor="@color/glance_library_db_card_text_secondary"
                 android:textSize="12sp"
                 tools:text="Last modified 2020-08-29"/>
 

@@ -22,6 +22,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.DBFile
 import kotlinx.android.synthetic.main.glance_library_activity_db.*
@@ -45,6 +46,12 @@ class DBActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                // When new item inserted by DiffUtil in adapter, we always scroll to the top to show the lasted db file to user.
+                recyclerView.scrollToPosition(0)
+            }
+        })
         dbViewModel.dbListLiveData.observe(this) { newDBList ->
             val diffResult = DiffUtil.calculateDiff(DBDiffCallback(dbList, newDBList))
             dbList.clear()

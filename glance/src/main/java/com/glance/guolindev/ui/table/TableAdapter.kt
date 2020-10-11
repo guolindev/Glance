@@ -22,6 +22,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.extension.dp
+import com.glance.guolindev.extension.setExtraMarginForFirstAndLastItem
 import com.glance.guolindev.logic.model.Table
 import com.glance.guolindev.ui.data.DataActivity
 import kotlinx.android.synthetic.main.glance_library_table_item.view.*
@@ -50,6 +52,7 @@ class TableAdapter(private val tableList: List<Table>) : RecyclerView.Adapter<Ta
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.setExtraMarginForFirstAndLastItem(position == 0, position == tableList.size - 1)
         val table = tableList[position]
         holder.tableNameText.text = table.name
     }

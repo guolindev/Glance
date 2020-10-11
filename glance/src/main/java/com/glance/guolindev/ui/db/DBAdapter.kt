@@ -28,6 +28,7 @@ import com.glance.guolindev.R
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.extension.exists
 import com.glance.guolindev.extension.isValidDBFile
+import com.glance.guolindev.extension.setExtraMarginForFirstAndLastItem
 import com.glance.guolindev.logic.model.DBFile
 import com.glance.guolindev.ui.table.TableActivity
 import com.google.android.material.card.MaterialCardView
@@ -73,16 +74,7 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position == 0 || position == dbList.size - 1) {
-            // We give first/last itemView the extra 10dp top/bottom margin to make the space between each item equal.
-            val itemView = holder.itemView
-            val params = itemView.layoutParams as RecyclerView.LayoutParams
-            if (position == 0) {
-                params.topMargin = params.topMargin + 10.dp
-            } else {
-                params.bottomMargin = params.bottomMargin + 10.dp
-            }
-        }
+        holder.setExtraMarginForFirstAndLastItem(position == 0, position == dbList.size - 1)
         val dbFile = dbList[position]
         holder.dbNameText.text = dbFile.name
         holder.dbPathText.text = dbFile.path

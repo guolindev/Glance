@@ -54,7 +54,6 @@ class TableActivity : AppCompatActivity() {
             finish()
             return
         }
-
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)

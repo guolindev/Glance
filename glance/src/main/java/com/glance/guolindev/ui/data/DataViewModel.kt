@@ -28,6 +28,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 /**
+ * DataViewModel holds view data of DataActivity and provide api to specific data operations of table.
  *
  * @author guolin
  * @since 2020/9/13

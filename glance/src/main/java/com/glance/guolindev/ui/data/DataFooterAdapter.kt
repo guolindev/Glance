@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.extension.toNumericString
 import com.glance.guolindev.view.FooterTextView
 
 /**
@@ -64,7 +65,7 @@ class DataFooterAdapter(private val layoutWidth: Int, private val screenWidth: I
         if (!::footerTextView.isInitialized) {
             footerTextView = holder.itemView as FooterTextView
         }
-        footerTextView.text = String.format(text, recordCount)
+        footerTextView.text = String.format(text, recordCount.toNumericString())
     }
 
     override fun getItemCount() = if (displayFooter) 1 else 0

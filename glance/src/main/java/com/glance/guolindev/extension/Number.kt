@@ -17,6 +17,7 @@
 package com.glance.guolindev.extension
 
 import com.glance.guolindev.Glance
+import java.lang.StringBuilder
 
 /**
  * Number extension methods.
@@ -45,3 +46,20 @@ val Double.dp: Double
         val scale = Glance.context.resources.displayMetrics.density
         return this * scale + 0.5
     }
+
+/**
+ * Convert a number to a numeric string.
+ * e.g. 12365 wil be converted into 12,365
+ */
+fun Int.toNumericString(): String {
+    val chars = toString().toCharArray()
+    chars.reverse()
+    val builder = StringBuilder()
+    chars.forEachIndexed { index, c ->
+        if (index != 0 && index % 3 == 0 && c != '-') {
+            builder.append(",")
+        }
+        builder.append(c)
+    }
+    return builder.reverse().toString()
+}

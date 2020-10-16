@@ -22,6 +22,7 @@ import org.junit.runner.RunWith
 
 /**
  * Test for DBScanner class.
+ *
  * @author guolin
  * @since 2020/8/28
  */

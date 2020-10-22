@@ -4,8 +4,4 @@
         <item name="android:statusBarColor">@color/glance_library_toolbar_bg</item>
     </style>
 
-    <style name="GlanceActivityTheme.ProgressBar">
-        <item name="colorAccent">#fff</item>
-    </style>
-
 </resources>

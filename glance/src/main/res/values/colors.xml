@@ -12,5 +12,7 @@
     <color name="glance_library_table_odd_row_bg">#F8F8F8</color>
     <color name="glance_library_table_border">#DDDDDD</color>
     <color name="glance_library_table_text">#444444</color>
+    <color name="glance_library_progress_primary">#446bf4</color>
+    <color name="glance_library_progress_primary_reverse">#FFFFFF</color>
 
 </resources>

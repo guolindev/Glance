@@ -3,8 +3,12 @@
     <style name="GlanceActivityTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     </style>
 
-    <style name="GlanceActivityTheme.ProgressBar">
-        <item name="colorAccent">#fff</item>
+    <style name="GlanceActivityTheme.ProgressBarPrimary">
+        <item name="colorAccent">@color/glance_library_progress_primary</item>
+    </style>
+
+    <style name="GlanceActivityTheme.ProgressBarPrimaryReverse">
+        <item name="colorAccent">@color/glance_library_progress_primary_reverse</item>
     </style>
 
 </resources>

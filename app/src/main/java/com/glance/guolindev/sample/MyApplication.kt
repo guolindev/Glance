@@ -36,6 +36,8 @@ class MyApplication : Application() {
         db = LitePalDB("test7", 30)
         LitePal.use(db)
         Connector.getDatabase()
+        LitePal.useDefault()
+        Connector.getDatabase()
     }
 
 }

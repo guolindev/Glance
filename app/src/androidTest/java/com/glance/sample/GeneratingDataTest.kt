@@ -36,13 +36,25 @@ class GeneratingDataTest {
     fun saveRecords() {
         val reader1 = Reader("reader1", 10, mutableListOf())
         val reader2 = Reader("reader2", 20, mutableListOf())
-        repeat(50) {
-            val magazine = Magazine("magazine${it}".repeat((1..50).random()), 10.0, Date(), 1f, 100, true, ByteArray(10))
+        repeat(150) {
+            val magazine = Magazine("magazine${it}".repeat((1..50).random()),
+                (1..100).random().toDouble(),
+                Date(),
+                (1..10).random().toFloat(),
+                (100..1000).random(),
+                Random().nextBoolean(),
+                ByteArray(10))
             reader1.magazines.add(magazine)
             magazine.saveThrows()
         }
-        repeat(50) {
-            val magazine = Magazine("magazine${it + 50}".repeat((1..50).random()), 20.0, Date(), 0.5f, 200, false, ByteArray(20))
+        repeat(80) {
+            val magazine = Magazine("magazine${it + 150}".repeat((1..50).random()),
+                (1..100).random().toDouble(),
+                Date(),
+                (1..10).random().toFloat(),
+                (100..1000).random(),
+                Random().nextBoolean(),
+                ByteArray(10))
             reader2.magazines.add(magazine)
             magazine.saveThrows()
         }

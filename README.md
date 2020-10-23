@@ -15,10 +15,10 @@ dependencies {
 }
 ```
 
-After adding the dependency to your project, you will see A new Glance icon on your launcher. Click it to browse all the data in the database of your app. This is quite easy.
+After adding the dependency to your project, you will see A new Glance icon on your launcher. Click it to browse all the data in the database of your app. It's quite easy.
 
 The below animation shows how it works.
 
 <img src="screenshots/1.gif" width="38%" />
 
-P.S. Glance only support AndroidX projects. Android-Support projects can't use this library and no plan to support for them in the future release either.
+P.S. Glance only supports AndroidX projects. Android-Support projects can't use this library and no plan to support for them in the future release either.

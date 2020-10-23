@@ -1,6 +1,6 @@
 # Glance
 
-Glance is an open source Android database debugging library which is still under developing. The mainly functionality is finished, and will be released soon.
+Glance is an open source Android database debugging library which is still under development. The mainly functionality is finished, and will be released soon.
 
 Glance is inspired by LeakCanary to be integrated into projects as dependency library. It will search both internal and external storage of current app to find out all the database files automatically.
 

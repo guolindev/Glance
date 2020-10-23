@@ -19,6 +19,6 @@ After adding the dependency to your project, you will see A new Glance icon on y
 
 The below animation shows how it works.
 
-<img src="screenshots/1.gif" width="32%" />
+<img src="screenshots/1.gif" width="38%" />
 
 P.S. Glance only support AndroidX projects. Android-Support projects can't use this library and no plan to support for them in the future release either.

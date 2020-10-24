@@ -7,5 +7,8 @@ import org.litepal.crud.LitePalSupport
  * @author guolin
  * @since 2020/9/2
  */
-class Reader(val name: String, val age: Int, val magazines: MutableList<Magazine>) :
-    LitePalSupport()
+class Reader(val name: String, val age: Int) : LitePalSupport() {
+
+    var magazines: MutableList<Magazine> = ArrayList()
+
+}

@@ -34,8 +34,8 @@ class GeneratingDataTest {
 
     @Test
     fun saveRecords() {
-        val reader1 = Reader("reader1", 10, mutableListOf())
-        val reader2 = Reader("reader2", 20, mutableListOf())
+        val reader1 = Reader("reader1", 10)
+        val reader2 = Reader("reader2", 20)
         repeat(150) {
             val magazine = Magazine("magazine${it}".repeat((1..50).random()),
                 (1..100).random().toDouble(),

@@ -24,7 +24,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "androidx.startup:startup-runtime:1.0.0-rc01"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.paging:paging-runtime:3.0.0-alpha07'
+    implementation 'androidx.paging:paging-runtime:3.0.0-alpha06'
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
@@ -57,7 +57,7 @@ publish {
     userOrg = 'guolindev'
     groupId = 'com.glance.guolindev'
     artifactId = 'glance'
-    publishVersion = '0.9.0'
+    publishVersion = '0.9.1'
     desc = 'A good helper for debugging Android database.'
     website = 'https://github.com/guolindev/Glance'
 }

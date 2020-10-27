@@ -5,8 +5,10 @@
 
     <application>
         <activity
-            android:name=".ui.db.DBActivity"
+            android:name="com.glance.guolindev.ui.db.DBActivity"
             android:label="Glance"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.glance.guolindev.${applicationId}"
             android:theme="@style/GlanceActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,11 +17,11 @@
         </activity>
 
         <activity
-            android:name=".ui.table.TableActivity"
+            android:name="com.glance.guolindev.ui.table.TableActivity"
             android:exported="false"
             android:theme="@style/GlanceActivityTheme" />
 
-        <activity android:name=".ui.data.DataActivity"
+        <activity android:name="com.glance.guolindev.ui.data.DataActivity"
             android:exported="false"
             android:theme="@style/GlanceActivityTheme" />
 

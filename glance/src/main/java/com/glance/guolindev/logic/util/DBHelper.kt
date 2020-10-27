@@ -115,7 +115,7 @@ class DBHelper {
                         val columnIndex = cursor.getColumnIndexOrThrow(column.name)
                         val data: String = when {
                             column.type.equals("text", true) || column.type.isEmpty() -> {
-                                 cursor.getString(columnIndex)
+                                 cursor.getString(columnIndex) ?: "<NULL>"
                             }
                             column.type.equals("integer", true) -> {
                                 cursor.getLong(columnIndex).toString()

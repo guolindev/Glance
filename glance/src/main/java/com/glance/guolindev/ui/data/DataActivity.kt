@@ -94,6 +94,7 @@ class DataActivity : AppCompatActivity() {
                 }
                 Resource.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    progressBar.visibility = View.INVISIBLE
                 }
             }
         }

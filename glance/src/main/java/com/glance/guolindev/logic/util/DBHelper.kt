@@ -67,7 +67,7 @@ class DBHelper {
      */
     suspend fun getTablesInDB(db: SQLiteDatabase) = withContext(Dispatchers.Default) {
         val tableList = ArrayList<Table>()
-        db.rawQuery("select * from sqlite_master", null).use { cursor ->
+        db.rawQuery("select * from sqlite_master where type = ?", arrayOf("table")).use { cursor ->
             if (cursor.moveToFirst()) {
                 do {
                     val tableName = cursor.getString(cursor.getColumnIndexOrThrow("tbl_name"))

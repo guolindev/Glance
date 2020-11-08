@@ -19,11 +19,11 @@ package com.glance.guolindev.logic.util
 import android.database.sqlite.SQLiteDatabase
 import android.widget.TextView
 import com.glance.guolindev.Glance
-import com.glance.guolindev.exception.ColumnTypeUnsupportedException
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.Table
+import com.glance.guolindev.logic.typechange.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.max
@@ -54,6 +54,11 @@ class DBHelper {
      * The min width of a column can be.
      */
     private val minColumnWidth = 20.dp
+
+    /**
+     * All the supported mapping type rules in the array.
+     */
+    private val typeChangeRules = arrayOf(IntegerMap(), TextMap(), RealMap(), BlobMap(), NullMap())
 
     /**
      * Open a database by the passed db file path and return SQLiteDatabase instance to operate this db file.
@@ -113,24 +118,25 @@ class DBHelper {
                     val dataList = ArrayList<String>()
                     for (column in columns) {
                         val columnIndex = cursor.getColumnIndexOrThrow(column.name)
-                        val data: String = when {
-                            column.type.equals("text", true) || column.type.isEmpty() -> {
-                                 cursor.getString(columnIndex) ?: "<NULL>"
+                        var fieldType: String? = null
+                        for (rule in typeChangeRules) {
+                            val type = rule.columnType2FieldType(column.type)
+                            if (type != null) {
+                                fieldType = type
+                                break
                             }
-                            column.type.equals("integer", true) -> {
-                                cursor.getLong(columnIndex).toString()
-                            }
-                            column.type.equals("real", true) -> {
-                                cursor.getDouble(columnIndex).toString()
-                            }
-                            column.type.equals("blob", true) -> {
-                                "<Binary Data>"
-                            }
-                            column.type.equals("null", true) -> {
-                                "<NULL>"
-                            }
-                            else -> {
-                                throw ColumnTypeUnsupportedException("The type of column ${column.name} in table $table is ${column.type} which is not supported.")
+                        }
+                        val data =  if (cursor.isNull(columnIndex)) {
+                            "<NULL>"
+                        } else {
+                            when(fieldType) {
+                                TEXT_FIELD_TYPE -> cursor.getString(columnIndex)
+                                INTEGER_FIELD_TYPE -> cursor.getLong(columnIndex).toString()
+                                REAL_FIELD_TYPE -> cursor.getDouble(columnIndex).toString()
+                                BLOB_FIELD_TYPE -> "<Binary Data>"
+                                NULL_FIELD_TYPE -> "<NULL>"
+                                // This column type is not supported. Glance will use the getString way to read value from this column.
+                                else -> cursor.getString(columnIndex)
                             }
                         }
                         dataList.add(data)
@@ -147,7 +153,11 @@ class DBHelper {
     /**
      * Measure the proper width of each column. They should just wrap the text content, but they can't be smaller than the min width or larger than the max width.
      */
-    private suspend fun measureColumnsWidth(db: SQLiteDatabase, table: String, columns: List<Column>) = withContext(Dispatchers.Default) {
+    private suspend fun measureColumnsWidth(
+        db: SQLiteDatabase,
+        table: String,
+        columns: List<Column>
+    ) = withContext(Dispatchers.Default) {
         val paint = TextView(Glance.context).paint
         for (column in columns) {
             var columnWidth = paint.measureText(column.name).toInt()

@@ -151,13 +151,10 @@ class DBHelper {
     }
 
     /**
-     * Measure the proper width of each column. They should just wrap the text content, but they can't be smaller than the min width or larger than the max width.
+     * Measure the proper width of each column. They should just wrap the text content, but they can't
+     * be smaller than the min width or larger than the max width.
      */
-    private suspend fun measureColumnsWidth(
-        db: SQLiteDatabase,
-        table: String,
-        columns: List<Column>
-    ) = withContext(Dispatchers.Default) {
+    private suspend fun measureColumnsWidth(db: SQLiteDatabase, table: String, columns: List<Column>) = withContext(Dispatchers.Default) {
         val paint = TextView(Glance.context).paint
         for (column in columns) {
             var columnWidth = paint.measureText(column.name).toInt()

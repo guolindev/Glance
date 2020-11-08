@@ -73,7 +73,9 @@ class DBActivity : AppCompatActivity() {
                 View.INVISIBLE
             }
         }
-        dbViewModel.loadAndRefreshDBFiles()
+        if (dbViewModel.dbListLiveData.value == null) {
+            dbViewModel.loadAndRefreshDBFiles()
+        }
     }
 
 }

@@ -65,7 +65,6 @@ class TableActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
 
-        viewModel.getAllTablesInDB(dbPath)
         viewModel.tablesLiveData.observe(this) {
             when (it.status) {
                 Resource.SUCCESS -> {
@@ -84,6 +83,9 @@ class TableActivity : AppCompatActivity() {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+        if (viewModel.tablesLiveData.value == null) {
+            viewModel.getAllTablesInDB(dbPath)
         }
     }
 

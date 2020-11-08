@@ -55,9 +55,16 @@ class TableViewModel(private val repository: DatabaseRepository) : ViewModel() {
     }
 
     /**
-     * Close the opened database when [TableActivity] destroyed.
+     * When the lifecycle of TableViewModel finished, we close the opened database.
      */
-    fun closeDatabase() = viewModelScope.launch(handler) {
+    override fun onCleared() {
+        closeDatabase()
+    }
+
+    /**
+     * Close the opened database.
+     */
+    private fun closeDatabase() = viewModelScope.launch(handler) {
         repository.closeDatabase()
     }
 

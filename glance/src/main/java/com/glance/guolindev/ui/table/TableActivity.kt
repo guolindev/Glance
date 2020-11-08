@@ -26,13 +26,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.glance.guolindev.R
-import com.glance.guolindev.logic.model.DBFile
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Table
-import com.glance.guolindev.ui.db.DBAdapter
-import kotlinx.android.synthetic.main.glance_library_activity_db.*
 import kotlinx.android.synthetic.main.glance_library_activity_table.*
-import kotlinx.android.synthetic.main.glance_library_activity_table.recyclerView
 
 /**
  * Table layer of Activity, which shows all tables in a specific database file.
@@ -97,11 +93,6 @@ class TableActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.closeDatabase()
     }
 
     companion object {

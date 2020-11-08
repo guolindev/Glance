@@ -117,7 +117,6 @@ class DataActivity : AppCompatActivity() {
      * Init the adapter for displaying data in RecyclerView.
      */
     private fun initAdapter(table: String, columns: List<Column>) {
-        println("initAdapter")
         // It may cost some time for calculating row width, so we put it into thread.
         thread {
             var rowWidth = 0
@@ -140,9 +139,7 @@ class DataActivity : AppCompatActivity() {
                         is LoadState.NotLoading -> {
                             horizontalScroller.visibility = View.VISIBLE
                             progressBar.visibility = View.INVISIBLE
-                            println("initAdapter loadStarted = $loadStarted")
                             if (loadStarted) {
-                                println("initAdapter display foot")
                                 // This case may be invoked before loading start.
                                 // We only display footer view after first loading by paging3.
                                 // Otherwise RecyclerView will scroll to the bottom when load finished which we don't want to see.

@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="glance_library_table_even_row_bg">#FFFFFF</color>
-    <color name="glance_library_table_odd_row_bg">#F8F8F8</color>
-    <color name="glance_library_table_border">#DDDDDD</color>
-    <color name="glance_library_table_text">#444444</color>
+    <color name="glance_library_toolbar_bg">#303030</color>
+    <color name="glance_library_status_bar_bg">#232323</color>
+    <color name="glance_library_db_card_bg">#3A3F45</color>
+    <color name="glance_library_db_card_text_primary">#F8F9F9</color>
+    <color name="glance_library_db_card_text_secondary">#9E9E9F</color>
+    <color name="glance_library_db_card_external_storage_db">#F2C249</color>
+    <color name="glance_library_db_card_internal_storage_db">#F9875B</color>
+    <color name="glance_library_db_card_storage_text">#FFFFFF</color>
+    <color name="glance_library_table_item_arrow">#F8F9F9</color>
+    <color name="glance_library_table_even_row_bg">#2E3238</color>
+    <color name="glance_library_table_odd_row_bg">#3A3F45</color>
+    <color name="glance_library_table_border">#3A3F45</color>
+    <color name="glance_library_table_text">#F8F9F9</color>
+    <color name="glance_library_progress_primary">#F8F9F9</color>
+    <color name="glance_library_progress_primary_reverse">#F8F9F9</color>
 
 </resources>

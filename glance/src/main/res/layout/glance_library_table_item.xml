@@ -37,7 +37,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/glance_library_arrow_right"
-            app:tint="@color/glance_library_toolbar_bg"
+            app:tint="@color/glance_library_table_item_arrow"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>

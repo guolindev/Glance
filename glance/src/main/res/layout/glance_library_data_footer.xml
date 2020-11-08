@@ -3,5 +3,4 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/msgText"
     android:layout_width="match_parent"
-    android:layout_height="36dp"
-    android:background="#fff" />
+    android:layout_height="36dp" />

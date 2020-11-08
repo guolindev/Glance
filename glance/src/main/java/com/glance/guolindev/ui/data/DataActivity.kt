@@ -187,6 +187,7 @@ class DataActivity : AppCompatActivity() {
             val layoutParam = LinearLayout.LayoutParams(column.width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
             rowTitleLayout.addView(tableCellView, layoutParam)
         }
+        rowTitleLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.glance_library_table_even_row_bg))
     }
 
     /**

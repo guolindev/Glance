@@ -32,6 +32,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
@@ -132,6 +133,7 @@ class DataActivity : AppCompatActivity() {
                 footerAdapter = DataFooterAdapter(rowWidth, horizontalScroller.width) {
                     adapter.itemCount
                 }
+                adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 // Concat DataAdapter and DataFooterAdapter which can show how many records loaded at bottom.
                 recyclerView.adapter = ConcatAdapter(adapter, footerAdapter)
                 adapter.addLoadStateListener { loadState ->

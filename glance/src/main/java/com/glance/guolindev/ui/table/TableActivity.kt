@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Table
@@ -58,6 +59,7 @@ class TableActivity : AppCompatActivity() {
         val tableList = ArrayList<Table>()
         val adapter = TableAdapter(tableList)
         val layoutManager = LinearLayoutManager(this)
+        adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
 

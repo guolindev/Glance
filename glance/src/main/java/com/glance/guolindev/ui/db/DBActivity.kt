@@ -49,7 +49,11 @@ class DBActivity : AppCompatActivity() {
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 // When new item inserted by DiffUtil in adapter, we always scroll to the top to show the lasted db file to user.
-                recyclerView.scrollToPosition(0)
+                if (savedInstanceState == null) {
+                    // We only scroll to the top when savedInstanceState is null.
+                    // This can avoid scrolling to top every time when device rotates.
+                    recyclerView.scrollToPosition(0)
+                }
             }
         })
         dbViewModel.dbListLiveData.observe(this) { newDBList ->

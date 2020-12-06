@@ -6,10 +6,12 @@
     <application>
         <activity
             android:name="com.glance.guolindev.ui.db.DBActivity"
-            android:label="Glance"
+            android:icon="@mipmap/glance_library_ic_launcher"
+            android:label="@string/glance_library_glance"
+            android:roundIcon="@mipmap/glance_library_ic_launcher_round"
             android:launchMode="singleTask"
             android:taskAffinity="com.glance.guolindev.${applicationId}"
-            android:theme="@style/GlanceActivityTheme">
+            android:theme="@style/GlanceLibraryActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,11 +21,11 @@
         <activity
             android:name="com.glance.guolindev.ui.table.TableActivity"
             android:exported="false"
-            android:theme="@style/GlanceActivityTheme" />
+            android:theme="@style/GlanceLibraryActivityTheme" />
 
         <activity android:name="com.glance.guolindev.ui.data.DataActivity"
             android:exported="false"
-            android:theme="@style/GlanceActivityTheme" />
+            android:theme="@style/GlanceLibraryActivityTheme" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

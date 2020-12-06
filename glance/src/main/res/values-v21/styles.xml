@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="GlanceActivityTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="GlanceLibraryActivityTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/glance_library_status_bar_bg</item>
     </style>
 

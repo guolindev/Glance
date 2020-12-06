@@ -1,13 +1,13 @@
 <resources>
 
-    <style name="GlanceActivityTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="GlanceLibraryActivityTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     </style>
 
-    <style name="GlanceActivityTheme.ProgressBarPrimary">
+    <style name="GlanceLibraryActivityTheme.ProgressBarPrimary">
         <item name="colorAccent">@color/glance_library_progress_primary</item>
     </style>
 
-    <style name="GlanceActivityTheme.ProgressBarPrimaryReverse">
+    <style name="GlanceLibraryActivityTheme.ProgressBarPrimaryReverse">
         <item name="colorAccent">@color/glance_library_progress_primary_reverse</item>
     </style>
 

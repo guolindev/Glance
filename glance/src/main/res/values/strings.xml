@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="glance_library_glance">Glance</string>
     <string name="glance_library_external_storage">external\nstorage</string>
     <string name="glance_library_internal_storage">internal\nstorage</string>
     <string name="glance_library_database_found">Database Found</string>

@@ -77,8 +77,14 @@ class DBActivity : AppCompatActivity() {
                 View.INVISIBLE
             }
         }
-        if (dbViewModel.dbListLiveData.value == null) {
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (dbViewModel.dbListLiveData.value == null) { // When there's no data on ui, we load and refresh db files.
             dbViewModel.loadAndRefreshDBFiles()
+        } else { // Otherwise, we only refresh db files to show the latest data.
+            dbViewModel.refreshDBFiles()
         }
     }
 

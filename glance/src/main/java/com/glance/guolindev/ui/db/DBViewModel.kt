@@ -40,6 +40,9 @@ class DBViewModel(private val repository: FileRepository) : ViewModel() {
 
     private val _dbListLiveData = MutableLiveData<List<DBFile>>()
 
+    /**
+     * The LiveData variable to observe loading status.
+     */
     val progressLiveData: LiveData<Boolean>
         get() = _progressLiveData
 
@@ -51,31 +54,26 @@ class DBViewModel(private val repository: FileRepository) : ViewModel() {
      */
     fun loadAndRefreshDBFiles() = viewModelScope.launch {
         _progressLiveData.value = true // start loading
-        // There're 3 steps in this function.
-        // First load db files from cache and show the on UI immediately.
+        // Load db files from cache and show the on UI immediately.
         val cachedDBList = repository.loadCachedDbFiles()
         _dbListLiveData.value = cachedDBList
-
-        // Second scan all db files of current app and update the UI with DiffUtil.
-        val scannedDBList = repository.scanAllDBFiles()
-        _dbListLiveData.value = scannedDBList
-
-        // Third update the cache with lasted data.
-        repository.cacheDbFiles(scannedDBList)
         _progressLiveData.value = false // finish loading
+
+        refreshDBFiles()
     }
 
     /**
-     * Scan all db files of current app. When find a db file, use LiveData to notify to the activity.
+     * Scan all db files of current app, then refresh the ui of current app.
      */
-    fun scanAllDBFiles() {
-        viewModelScope.launch {
-//            Repository.scanAllDBFiles()
-//                .flowOn(Dispatchers.Default)
-//                .collect {
-//                    _dbFileLiveData.value = it
-//                }
-        }
+    fun refreshDBFiles() = viewModelScope.launch {
+        _progressLiveData.value = true // start loading
+        // Scan all db files of current app and update the UI with DiffUtil.
+        val scannedDBList = repository.scanAllDBFiles()
+        _dbListLiveData.value = scannedDBList
+
+        // Update the cache with lasted data.
+        repository.cacheDbFiles(scannedDBList)
+        _progressLiveData.value = false // finish loading
     }
 
 }

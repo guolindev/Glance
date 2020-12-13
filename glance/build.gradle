@@ -60,7 +60,7 @@ publish {
     userOrg = 'guolindev'
     groupId = 'com.glance.guolindev'
     artifactId = 'glance'
-    publishVersion = '0.9.3'
+    publishVersion = '1.0.0-alpha01'
     desc = 'A good helper for debugging Android database.'
     website = 'https://github.com/guolindev/Glance'
 }

@@ -26,10 +26,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.glance.guolindev.R
+import com.glance.guolindev.databinding.GlanceLibraryActivityTableBinding
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Table
-import kotlinx.android.synthetic.main.glance_library_activity_table.*
 
 /**
  * Table layer of Activity, which shows all tables in a specific database file.
@@ -41,9 +40,12 @@ class TableActivity : AppCompatActivity() {
 
     private val viewModel by lazy { ViewModelProvider(this, TableViewModelFactory()).get(TableViewModel::class.java) }
 
+    private lateinit var binding: GlanceLibraryActivityTableBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.glance_library_activity_table)
+        binding = GlanceLibraryActivityTableBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val dbName = intent.getStringExtra(DB_NAME)
         val dbPath = intent.getStringExtra(DB_PATH)
         if (dbPath == null) {
@@ -51,7 +53,7 @@ class TableActivity : AppCompatActivity() {
             finish()
             return
         }
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.title = dbName
@@ -60,24 +62,24 @@ class TableActivity : AppCompatActivity() {
         val adapter = TableAdapter(tableList)
         val layoutManager = LinearLayoutManager(this)
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = layoutManager
 
         viewModel.tablesLiveData.observe(this) {
             when (it.status) {
                 Resource.SUCCESS -> {
-                    loadingGroup.visibility = View.INVISIBLE
-                    contentGroup.visibility = View.VISIBLE
+                    binding.loadingGroup.visibility = View.INVISIBLE
+                    binding.contentGroup.visibility = View.VISIBLE
                     tableList.addAll(it.data!!)
                     adapter.notifyDataSetChanged()
                 }
                 Resource.LOADING -> {
-                    loadingGroup.visibility = View.VISIBLE
-                    contentGroup.visibility = View.INVISIBLE
+                    binding.loadingGroup.visibility = View.VISIBLE
+                    binding.contentGroup.visibility = View.INVISIBLE
                 }
                 Resource.ERROR -> {
-                    loadingGroup.visibility = View.INVISIBLE
-                    contentGroup.visibility = View.INVISIBLE
+                    binding.loadingGroup.visibility = View.INVISIBLE
+                    binding.contentGroup.visibility = View.INVISIBLE
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
             }

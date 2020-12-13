@@ -18,21 +18,19 @@ package com.glance.guolindev.ui.db
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
-import com.glance.guolindev.extension.dp
+import com.glance.guolindev.databinding.GlanceLibraryDbItemBinding
 import com.glance.guolindev.extension.exists
 import com.glance.guolindev.extension.isValidDBFile
 import com.glance.guolindev.extension.setExtraMarginForFirstAndLastItem
 import com.glance.guolindev.logic.model.DBFile
 import com.glance.guolindev.ui.table.TableActivity
 import com.google.android.material.card.MaterialCardView
-import kotlinx.android.synthetic.main.glance_library_db_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,18 +44,18 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
 
     lateinit var context: Context
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val storageLayout: MaterialCardView = itemView.storageLayout
-        val storageText: TextView = itemView.storageText
-        val dbNameText: TextView = itemView.dbNameText
-        val dbPathText: TextView = itemView.dbPathText
-        val modifyTimeText: TextView = itemView.modifyTimeText
+    class ViewHolder(dbItemBinding: GlanceLibraryDbItemBinding) : RecyclerView.ViewHolder(dbItemBinding.root) {
+        val storageLayout: MaterialCardView = dbItemBinding.storageLayout
+        val storageText: TextView = dbItemBinding.storageText
+        val dbNameText: TextView = dbItemBinding.dbNameText
+        val dbPathText: TextView = dbItemBinding.dbPathText
+        val modifyTimeText: TextView = dbItemBinding.modifyTimeText
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (!::context.isInitialized) context = parent.context
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_db_item, parent, false)
-        val holder = ViewHolder(view)
+        val dbItemBinding = GlanceLibraryDbItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        val holder = ViewHolder(dbItemBinding)
         holder.itemView.setOnClickListener {
             val position = holder.bindingAdapterPosition
             val dbFile = dbList[position]

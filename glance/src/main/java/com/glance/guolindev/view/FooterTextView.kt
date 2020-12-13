@@ -63,7 +63,7 @@ class FooterTextView(context: Context, attrs: AttributeSet? = null) : AppCompatT
         val leftEdge = scrollX
         val rightEdge = scrollX + screenWidth
         // This is the center position on x axis of the visible screen.
-        val x = (leftEdge + rightEdge) / 2 - textWidth / 2;
+        val x = (leftEdge + rightEdge) / 2 - textWidth / 2
         paint.getTextBounds(text, 0, text.length, rect)
         val offset = (rect.top + rect.bottom) / 2f
         val y = height / 2f - offset

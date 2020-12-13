@@ -17,16 +17,13 @@
 package com.glance.guolindev.ui.table
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.glance.guolindev.R
-import com.glance.guolindev.extension.dp
+import com.glance.guolindev.databinding.GlanceLibraryTableItemBinding
 import com.glance.guolindev.extension.setExtraMarginForFirstAndLastItem
 import com.glance.guolindev.logic.model.Table
 import com.glance.guolindev.ui.data.DataActivity
-import kotlinx.android.synthetic.main.glance_library_table_item.view.*
 
 /**
  * Adapter for the RecyclerView to show all tables in db file.
@@ -36,13 +33,13 @@ import kotlinx.android.synthetic.main.glance_library_table_item.view.*
  */
 class TableAdapter(private val tableList: List<Table>) : RecyclerView.Adapter<TableAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tableNameText: TextView = itemView.tableNameText
+    class ViewHolder(tableItemBinding: GlanceLibraryTableItemBinding) : RecyclerView.ViewHolder(tableItemBinding.root) {
+        val tableNameText: TextView = tableItemBinding.tableNameText
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.glance_library_table_item, parent, false)
-        val holder = ViewHolder(view)
+        val tableItemBinding = GlanceLibraryTableItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val holder = ViewHolder(tableItemBinding)
         holder.itemView.setOnClickListener {
             val position = holder.bindingAdapterPosition
             val table = tableList[position]

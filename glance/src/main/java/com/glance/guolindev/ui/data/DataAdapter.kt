@@ -28,6 +28,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.databinding.GlanceLibraryRowItemBinding
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
@@ -49,16 +50,16 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (!::context.isInitialized) context = parent.context
-        val rowLayout = LayoutInflater.from(context).inflate(R.layout.glance_library_row_item, parent, false) as TableRowLayout
-        val param = rowLayout.layoutParams
+        val rowLayoutBinding = GlanceLibraryRowItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        val param = rowLayoutBinding.root.layoutParams
         param.width = rowWidth
         for (column in columns) {
             val tableCellView = buildTableCellView()
             // We let each column has 20dp extra space, to make it look better.
             val layoutParam = LinearLayout.LayoutParams(column.width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
-            rowLayout.addView(tableCellView, layoutParam)
+            rowLayoutBinding.root.addView(tableCellView, layoutParam)
         }
-        return ViewHolder(rowLayout)
+        return ViewHolder(rowLayoutBinding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

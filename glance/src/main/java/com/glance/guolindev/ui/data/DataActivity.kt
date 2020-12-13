@@ -34,13 +34,11 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.databinding.GlanceLibraryActivityDataBinding
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.view.TableCellView
-import kotlinx.android.synthetic.main.glance_library_activity_data.*
-import kotlinx.android.synthetic.main.glance_library_activity_table.recyclerView
-import kotlinx.android.synthetic.main.glance_library_activity_table.toolbar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
@@ -54,6 +52,8 @@ import kotlin.concurrent.thread
 class DataActivity : AppCompatActivity() {
 
     private val viewModel by lazy { ViewModelProvider(this, DataViewModelFactory()).get(DataViewModel::class.java) }
+
+    private lateinit var binding: GlanceLibraryActivityDataBinding
 
     /**
      * The adapter for the main data of table.
@@ -72,7 +72,8 @@ class DataActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.glance_library_activity_data)
+        binding = GlanceLibraryActivityDataBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val table = intent.getStringExtra(TABLE_NAME)
         if (table == null) {
             Toast.makeText(this, "Table name is null", Toast.LENGTH_SHORT).show()
@@ -80,13 +81,13 @@ class DataActivity : AppCompatActivity() {
             return
         }
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.title = table
 
         val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
+        binding.recyclerView.layoutManager = layoutManager
 
         viewModel.columnsLiveData.observe(this) {
             when (it.status) {
@@ -95,7 +96,7 @@ class DataActivity : AppCompatActivity() {
                 }
                 Resource.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                    progressBar.visibility = View.INVISIBLE
+                    binding.progressBar.visibility = View.INVISIBLE
                 }
             }
         }
@@ -125,22 +126,22 @@ class DataActivity : AppCompatActivity() {
                 rowWidth += column.width
             }
             rowWidth += columns.size * 20.dp // we always have 20dp extra space for each column. 5dp for start. 15dp for end.
-            recyclerView.post {
+            binding.recyclerView.post {
                 // Make sure we are back to the main thread and we can get the width of HorizontalScroller now.
-                rowWidth = rowWidth.coerceAtLeast(horizontalScroller.width)
+                rowWidth = rowWidth.coerceAtLeast(binding.horizontalScroller.width)
                 buildTableTitle(columns, rowWidth)
                 adapter = DataAdapter(columns, rowWidth)
-                footerAdapter = DataFooterAdapter(rowWidth, horizontalScroller.width) {
+                footerAdapter = DataFooterAdapter(rowWidth, binding.horizontalScroller.width) {
                     adapter.itemCount
                 }
                 adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 // Concat DataAdapter and DataFooterAdapter which can show how many records loaded at bottom.
-                recyclerView.adapter = ConcatAdapter(adapter, footerAdapter)
+                binding.recyclerView.adapter = ConcatAdapter(adapter, footerAdapter)
                 adapter.addLoadStateListener { loadState ->
                     when (loadState.refresh) {
                         is LoadState.NotLoading -> {
-                            horizontalScroller.visibility = View.VISIBLE
-                            progressBar.visibility = View.INVISIBLE
+                            binding.horizontalScroller.visibility = View.VISIBLE
+                            binding.progressBar.visibility = View.INVISIBLE
                             if (loadStarted) {
                                 // This case may be invoked before loading start.
                                 // We only display footer view after first loading by paging3.
@@ -149,14 +150,14 @@ class DataActivity : AppCompatActivity() {
                             }
                         }
                         is LoadState.Loading -> {
-                            horizontalScroller.visibility = View.INVISIBLE
-                            progressBar.visibility = View.VISIBLE
+                            binding.horizontalScroller.visibility = View.INVISIBLE
+                            binding.progressBar.visibility = View.VISIBLE
                         }
                     }
                 }
                 // Listener the scroll amount by the HorizontalScroller and notify it to DataFooterAdapter
                 // to make the text on footer view showed in center.
-                horizontalScroller.setScrollObserver {
+                binding.horizontalScroller.setScrollObserver {
                     footerAdapter.notifyScrollXChanged(it)
                 }
                 loadDataFromTable(table, columns)
@@ -182,16 +183,16 @@ class DataActivity : AppCompatActivity() {
      * Build a TableRowLayout as a row to show the columns of a table as title.
      */
     private fun buildTableTitle(columns: List<Column>, rowWidth: Int) {
-        val param = rowTitleLayout.layoutParams
+        val param = binding.rowTitleLayout.layoutParams
         param.width = rowWidth
         columns.forEachIndexed { index, column ->
             val tableCellView = buildTableCellView(column)
             tableCellView.isFirstCell = index == 0 // Indicate it's first cell of the row or not
             // We let each column has 20dp extra space, to make it look better.
             val layoutParam = LinearLayout.LayoutParams(column.width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
-            rowTitleLayout.addView(tableCellView, layoutParam)
+            binding.rowTitleLayout.addView(tableCellView, layoutParam)
         }
-        rowTitleLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.glance_library_table_even_row_bg))
+        binding.rowTitleLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.glance_library_table_even_row_bg))
     }
 
     /**

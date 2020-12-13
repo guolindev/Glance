@@ -24,8 +24,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.databinding.GlanceLibraryActivityDbBinding
 import com.glance.guolindev.logic.model.DBFile
-import kotlinx.android.synthetic.main.glance_library_activity_db.*
 
 /**
  * Databases layer of Activity, which shows all the databases file found by Glance.
@@ -38,21 +38,24 @@ class DBActivity : AppCompatActivity() {
 
     private val dbViewModel by lazy { ViewModelProvider(this, DBViewModelFactory()).get(DBViewModel::class.java) }
 
+    private lateinit var binding: GlanceLibraryActivityDbBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.glance_library_activity_db)
+        binding = GlanceLibraryActivityDbBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val dbList = ArrayList<DBFile>()
         val adapter = DBAdapter(dbList)
         val layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = layoutManager
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 // When new item inserted by DiffUtil in adapter, we always scroll to the top to show the lasted db file to user.
                 if (savedInstanceState == null) {
                     // We only scroll to the top when savedInstanceState is null.
                     // This can avoid scrolling to top every time when device rotates.
-                    recyclerView.scrollToPosition(0)
+                    binding.recyclerView.scrollToPosition(0)
                 }
             }
         })
@@ -66,10 +69,10 @@ class DBActivity : AppCompatActivity() {
             } else {
                 "${adapter.itemCount} ${getString(R.string.glance_library_databases_found)}"
             }
-            titleText.text = title
+            binding.titleText.text = title
         }
         dbViewModel.progressLiveData.observe(this) {
-            progressBar.visibility = if (it) {
+            binding.progressBar.visibility = if (it) {
                 // start loading
                 View.VISIBLE
             } else {

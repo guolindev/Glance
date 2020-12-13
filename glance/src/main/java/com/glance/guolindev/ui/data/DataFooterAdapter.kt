@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
+import com.glance.guolindev.databinding.GlanceLibraryDataFooterBinding
 import com.glance.guolindev.extension.toNumericString
 import com.glance.guolindev.view.FooterTextView
 
@@ -49,10 +50,10 @@ class DataFooterAdapter(private val layoutWidth: Int, private val screenWidth: I
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (!::context.isInitialized) context = parent.context
-        val itemView = LayoutInflater.from(context).inflate(R.layout.glance_library_data_footer, parent, false) as FooterTextView
-        itemView.screenWidth = screenWidth.toFloat()
-        itemView.layoutParams.width = layoutWidth
-        return ViewHolder(itemView)
+        val footerBinding = GlanceLibraryDataFooterBinding.inflate(LayoutInflater.from(context), parent, false)
+        footerBinding.root.screenWidth = screenWidth.toFloat()
+        footerBinding.root.layoutParams.width = layoutWidth
+        return ViewHolder(footerBinding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

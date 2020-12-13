@@ -25,7 +25,7 @@ The below animation shows how it works.
 
 <img src="screenshots/2.gif" width="38%" />
 
-Note that Glance only supports AndroidX projects. Android-Support projects can't use this library and no plan to support for them in the future release either.
+Note that Glance only supports AndroidX projects. Android-Support projects can't use this library, and have no plan to support for them in the future release either.
 
 ## License
 

@@ -20,6 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.glance.guolindev.Glance
+import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Table
 import com.glance.guolindev.logic.repository.DatabaseRepository
@@ -43,7 +45,8 @@ class TableViewModel(private val repository: DatabaseRepository) : ViewModel() {
     private val _tablesLiveData = MutableLiveData<Resource<List<Table>>>()
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        _tablesLiveData.value = Resource.error(throwable.message ?: "Uncaught exception happens")
+        _tablesLiveData.value = Resource.error(throwable.message
+                ?: Glance.context.getString(R.string.glance_library_uncaught_exception_happened))
     }
 
     /**

@@ -60,10 +60,10 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
             val position = holder.bindingAdapterPosition
             val dbFile = dbList[position]
             if (!dbFile.exists()) {
-                Toast.makeText(parent.context, "This file doesn't exist anymore.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(parent.context, R.string.glance_library_this_file_does_not_exist_anymore, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else if (!dbFile.isValidDBFile()) {
-                Toast.makeText(parent.context, "This file is not a valid db file.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(parent.context, R.string.glance_library_this_is_not_a_valid_db_file, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             TableActivity.actionOpenDatabase(parent.context, dbFile.name, dbFile.path)
@@ -78,14 +78,16 @@ class DBAdapter(private val dbList: List<DBFile>) : RecyclerView.Adapter<DBAdapt
         holder.dbPathText.text = dbFile.path
         if (dbFile.internal) {
             holder.storageText.setText(R.string.glance_library_internal_storage)
-            holder.storageLayout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.glance_library_db_card_internal_storage_db))
+            holder.storageLayout.setCardBackgroundColor(ContextCompat.getColor(context,
+                R.color.glance_library_db_card_internal_storage_db))
         } else {
             holder.storageText.setText(R.string.glance_library_external_storage)
-            holder.storageLayout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.glance_library_db_card_external_storage_db))
+            holder.storageLayout.setCardBackgroundColor(ContextCompat.getColor(context,
+                R.color.glance_library_db_card_external_storage_db))
         }
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
-        val modifyTime = "Last modified ${simpleDateFormat.format(dbFile.modifyTime)}"
-        holder.modifyTimeText.text = modifyTime
+        val modifyTime = simpleDateFormat.format(dbFile.modifyTime)
+        holder.modifyTimeText.text = String.format(context.getString(R.string.glance_library_last_modified), modifyTime)
     }
 
     override fun getItemCount() = dbList.size

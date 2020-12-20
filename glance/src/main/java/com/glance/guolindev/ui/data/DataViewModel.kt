@@ -21,6 +21,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.glance.guolindev.Glance
+import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.repository.DatabaseRepository
@@ -44,7 +46,8 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
     private val _columnsLiveData = MutableLiveData<Resource<List<Column>>>()
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        _columnsLiveData.value = Resource.error(throwable.message ?: "Uncaught exception happens")
+        _columnsLiveData.value = Resource.error(throwable.message
+                ?: Glance.context.getString(R.string.glance_library_uncaught_exception_happened))
     }
 
     /**
@@ -58,6 +61,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
     /**
      * Get the flow to load data from specific table.
      */
-    fun loadDataFromTable(table: String, columns: List<Column>) = repository.getDataFromTableStream(table, columns).cachedIn(viewModelScope)
+    fun loadDataFromTable(table: String, columns: List<Column>) =
+        repository.getDataFromTableStream(table, columns).cachedIn(viewModelScope)
 
 }

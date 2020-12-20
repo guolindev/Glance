@@ -7,6 +7,11 @@
     <string name="glance_library_databases_found">Databases Found</string>
     <string name="glance_library_record_loaded">%1$s record in total</string>
     <string name="glance_library_records_loaded">%1$s records in total</string>
+    <string name="glance_library_last_modified">Last modified %1$s</string>
     <string name="glance_library_clipboard_content_copy_label">glance_library_clipboard_content_copy</string>
     <string name="glance_library_content_copied_to_clipboard">Content copied to clipboard</string>
+    <string name="glance_library_table_name_is_null">Table name is null</string>
+    <string name="glance_library_this_file_does_not_exist_anymore">This file does not exist anymore</string>
+    <string name="glance_library_this_is_not_a_valid_db_file">This is not a valid db file</string>
+    <string name="glance_library_uncaught_exception_happened">Uncaught exception happened</string>
 </resources>

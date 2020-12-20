@@ -76,7 +76,7 @@ class DataActivity : AppCompatActivity() {
         setContentView(binding.root)
         val table = intent.getStringExtra(TABLE_NAME)
         if (table == null) {
-            Toast.makeText(this, "Table name is null", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.glance_library_table_name_is_null, Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -152,6 +152,9 @@ class DataActivity : AppCompatActivity() {
                         is LoadState.Loading -> {
                             binding.horizontalScroller.visibility = View.INVISIBLE
                             binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is LoadState.Error -> {
+
                         }
                     }
                 }

@@ -7,4 +7,6 @@
     <string name="glance_library_databases_found">Databases Found</string>
     <string name="glance_library_record_loaded">%1$s record in total</string>
     <string name="glance_library_records_loaded">%1$s records in total</string>
+    <string name="glance_library_clipboard_content_copy_label">glance_library_clipboard_content_copy</string>
+    <string name="glance_library_content_copied_to_clipboard">Content copied to clipboard</string>
 </resources>

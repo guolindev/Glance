@@ -173,9 +173,9 @@ class DataActivity : AppCompatActivity() {
             viewModel.loadDataFromTable(table, columns).collect {
                 loadStarted = true
                 adapter.submitData(it)
-                // This line will never reach. Don't do anything below
+                // This line will never reach. Don't do anything below.
             }
-            // This line will never reach. Don't do anything below
+            // This line will never reach. Don't do anything below.
         }
     }
 
@@ -187,7 +187,7 @@ class DataActivity : AppCompatActivity() {
         param.width = rowWidth
         columns.forEachIndexed { index, column ->
             val tableCellView = buildTableCellView(column)
-            tableCellView.isFirstCell = index == 0 // Indicate it's first cell of the row or not
+            tableCellView.columnIndex = index // Indicate the column index of the row.
             // We let each column has 20dp extra space, to make it look better.
             val layoutParam = LinearLayout.LayoutParams(column.width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
             binding.rowTitleLayout.addView(tableCellView, layoutParam)

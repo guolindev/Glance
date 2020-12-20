@@ -74,8 +74,8 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
             rowLayout.setBackgroundColor(ContextCompat.getColor(context, backgroundColorRes))
             for (i in (0 until rowLayout.childCount)) {
                 val tableCellView = rowLayout.getChildAt(i) as TableCellView
-                tableCellView.isFirstCell = i == 0 // Indicate it's first cell of the row or not
-                tableCellView.text = row.data[i]
+                tableCellView.columnIndex = i
+                tableCellView.row = row
             }
         }
     }

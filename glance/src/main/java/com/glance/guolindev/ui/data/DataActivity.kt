@@ -154,7 +154,10 @@ class DataActivity : AppCompatActivity() {
                             binding.progressBar.visibility = View.VISIBLE
                         }
                         is LoadState.Error -> {
-
+                            binding.horizontalScroller.visibility = View.VISIBLE
+                            binding.progressBar.visibility = View.INVISIBLE
+                            Toast.makeText(this, R.string.glance_library_something_is_wrong_when_loading_data,
+                                Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

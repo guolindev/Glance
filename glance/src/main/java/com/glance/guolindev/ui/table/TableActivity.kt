@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.glance.guolindev.R
 import com.glance.guolindev.databinding.GlanceLibraryActivityTableBinding
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Table
@@ -49,7 +50,7 @@ class TableActivity : AppCompatActivity() {
         val dbName = intent.getStringExtra(DB_NAME)
         val dbPath = intent.getStringExtra(DB_PATH)
         if (dbPath == null) {
-            Toast.makeText(this, "dbPath is null which is not a correct state.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.glance_library_db_path_is_null, Toast.LENGTH_SHORT).show()
             finish()
             return
         }

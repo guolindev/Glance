@@ -14,4 +14,6 @@
     <string name="glance_library_this_file_does_not_exist_anymore">This file does not exist anymore</string>
     <string name="glance_library_this_is_not_a_valid_db_file">This is not a valid db file</string>
     <string name="glance_library_uncaught_exception_happened">Uncaught exception happened</string>
+    <string name="glance_library_db_path_is_null">dbPath is null which is not a correct state</string>
+    <string name="glance_library_something_is_wrong_when_loading_data">Something is wrong when loading data</string>
 </resources>

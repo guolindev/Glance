@@ -70,6 +70,13 @@ class DBActivity : AppCompatActivity() {
                 "${adapter.itemCount} ${getString(R.string.glance_library_databases_found)}"
             }
             binding.titleText.text = title
+            if (adapter.itemCount > 0) {
+                binding.noDbTextView.visibility = View.INVISIBLE
+                binding.recyclerView.visibility = View.VISIBLE
+            } else {
+                binding.noDbTextView.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.INVISIBLE
+            }
         }
         dbViewModel.progressLiveData.observe(this) {
             binding.progressBar.visibility = if (it) {

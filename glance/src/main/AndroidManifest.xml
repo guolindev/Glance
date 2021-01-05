@@ -4,19 +4,26 @@
     package="com.glance.guolindev">
 
     <application>
+
         <activity
             android:name="com.glance.guolindev.ui.db.DBActivity"
             android:icon="@mipmap/glance_library_ic_launcher"
             android:label="@string/glance_library_glance"
             android:roundIcon="@mipmap/glance_library_ic_launcher_round"
-            android:launchMode="singleTask"
             android:taskAffinity="com.glance.guolindev.${applicationId}"
-            android:theme="@style/GlanceLibraryActivityTheme">
+            android:theme="@style/GlanceLibraryActivityTheme" />
+
+        <activity-alias
+            android:name="com.glance.guolindev.ui.db.DBActivityLauncher"
+            android:icon="@mipmap/glance_library_ic_launcher"
+            android:label="@string/glance_library_glance"
+            android:taskAffinity="com.glance.guolindev.${applicationId}"
+            android:targetActivity="com.glance.guolindev.ui.db.DBActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
         <activity
             android:name="com.glance.guolindev.ui.table.TableActivity"

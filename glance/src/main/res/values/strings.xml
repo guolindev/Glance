@@ -5,7 +5,7 @@
     <string name="glance_library_internal_storage">internal\nstorage</string>
     <string name="glance_library_database_found">Database Found</string>
     <string name="glance_library_databases_found">Databases Found</string>
-    <string name="glance_library_no_databases_found">No database found in your app.</string>
+    <string name="glance_library_no_databases_found">No database found in your app</string>
     <string name="glance_library_record_loaded">%1$s record in total</string>
     <string name="glance_library_records_loaded">%1$s records in total</string>
     <string name="glance_library_last_modified">Last modified %1$s</string>

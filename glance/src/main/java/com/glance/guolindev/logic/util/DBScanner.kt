@@ -17,11 +17,9 @@
 package com.glance.guolindev.logic.util
 
 import com.glance.guolindev.Glance
-import com.glance.guolindev.extension.isDBFile
+import com.glance.guolindev.extension.isValidDBFile
 import com.glance.guolindev.logic.model.DBFile
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
@@ -70,7 +68,7 @@ class DBScanner {
             for (file in listFiles) {
                 if (file.isDirectory) {
                     scanDBFilesUnderSpecificDir(file, internal, dbList)
-                } else if (file.isDBFile()) {
+                } else if (file.isValidDBFile()) {
                     dbList.add(DBFile(file.name, file.path, internal, Date(file.lastModified())))
                 }
             }

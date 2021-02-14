@@ -28,20 +28,15 @@ import java.lang.Exception
  */
 
 /**
- * Check a file ends with .db or not.
- */
-fun File.isDBFile() = name.endsWith(".db")
-
-/**
  * Check the file represented by DBFile exists or not.
  */
 fun DBFile.exists() = File(path).exists()
 
 /**
- * Check the file represented by DBFile is valid SQLite db file or not.
+ * Check this file is valid SQLite db file or not.
  */
-fun DBFile.isValidDBFile() = try {
-    val reader = FileReader(File(path))
+fun File.isValidDBFile() = try {
+    val reader = FileReader(this)
     val buffer = CharArray(16)
     reader.read(buffer, 0, 16)
     val str = String(buffer)
@@ -52,3 +47,13 @@ fun DBFile.isValidDBFile() = try {
     false
 }
 
+/**
+ * Check the file represented by DBFile is valid SQLite db file or not.
+ */
+fun DBFile.isValidDBFile() = try {
+    val file = File(path)
+    file.isValidDBFile()
+} catch (e: Exception) {
+    e.printStackTrace()
+    false
+}

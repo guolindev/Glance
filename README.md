@@ -11,7 +11,7 @@ You can experience it right now with below dependency.
 ```groovy
 dependencies {
     // debugImplementation because Glance should only run in debug builds.
-    debugImplementation 'com.glance.guolindev:glance:1.0.0-alpha02'
+    debugImplementation 'com.glance.guolindev:glance:1.0.0'
 }
 ```
 

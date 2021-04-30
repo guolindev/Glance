@@ -18,6 +18,7 @@ package com.glance.guolindev.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.widget.HorizontalScrollView
 
 /**
@@ -44,5 +45,18 @@ class HorizontalScroller(context: Context, attrs: AttributeSet? = null) : Horizo
     fun setScrollObserver(observer: (Float) -> Unit) {
         scrollObserver = observer
     }
+
+    /**
+     * deal with the motion event to scroll, while passing the event downwards
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
+    /**
+     * do not intercept touch event so that child scrollable view can also receive event to scroll
+     */
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean = false
 
 }

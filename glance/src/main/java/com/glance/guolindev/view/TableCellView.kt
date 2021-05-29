@@ -44,6 +44,11 @@ class TableCellView(context: Context, attrs: AttributeSet? = null) : AppCompatTe
     private val borderPaint = Paint()
 
     /**
+     * Record the first timestamp this view is clicked.
+     */
+    internal var firstClickTimeStamp = 0L
+
+    /**
      * Keep the column index of current table row.
      */
     var columnIndex = -1

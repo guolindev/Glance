@@ -23,8 +23,10 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -69,6 +71,11 @@ class DataActivity : AppCompatActivity() {
      * Indicates the load is started or not.
      */
     private var loadStarted = false
+
+    /**
+     * Dialog with EditText to modify value.
+     */
+    private var editDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +122,36 @@ class DataActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        editDialog?.let {
+            if (it.isShowing) {
+                it.dismiss()
+            }
+        }
+    }
+
+    /**
+     * Show the dialog with existing value from db, and provide a editable way to change it.
+     */
+    fun showModifyValueDialog(tableCellView: TableCellView) {
+        val dialog = AlertDialog.Builder(this).apply {
+            setView(R.layout.glance_library_dialog_edit_text)
+            setPositiveButton(R.string.glance_library_apply) { _, _ ->
+                // TODO
+            }
+            setNegativeButton(R.string.glance_library_cancel) { _, _ ->
+                // TODO
+            }
+        }.create()
+        dialog.show()
+        val dialogEditText = dialog.findViewById<EditText>(R.id.dialog_edit_text)
+        assert(dialogEditText != null)
+        dialogEditText!!.setText(tableCellView.text)
+        dialogEditText.requestFocusFromTouch()
+        editDialog = dialog
+    }
+
     /**
      * Init the adapter for displaying data in RecyclerView.
      */
@@ -130,7 +167,7 @@ class DataActivity : AppCompatActivity() {
                 // Make sure we are back to the main thread and we can get the width of HorizontalScroller now.
                 rowWidth = rowWidth.coerceAtLeast(binding.horizontalScroller.width)
                 buildTableTitle(columns, rowWidth)
-                adapter = DataAdapter(columns, rowWidth)
+                adapter = DataAdapter(this, columns, rowWidth)
                 footerAdapter = DataFooterAdapter(rowWidth, binding.horizontalScroller.width) {
                     adapter.itemCount
                 }

@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.glance.guolindev.R
 import com.glance.guolindev.databinding.GlanceLibraryRowItemBinding
 import com.glance.guolindev.extension.dp
+import com.glance.guolindev.extension.setOnDoubleClickListener
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.view.TableCellView
@@ -42,7 +43,11 @@ import com.glance.guolindev.view.TableRowLayout
  * @author guolin
  * @since 2020/9/22
  */
-class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) : PagingDataAdapter<Row, DataAdapter.ViewHolder>(COMPARATOR) {
+class DataAdapter(
+    private val activity: DataActivity,
+    private val columns: List<Column>,
+    private val rowWidth: Int
+) : PagingDataAdapter<Row, DataAdapter.ViewHolder>(COMPARATOR) {
 
     lateinit var context: Context
 
@@ -58,6 +63,13 @@ class DataAdapter(private val columns: List<Column>, private val rowWidth: Int) 
             // We let each column has 20dp extra space, to make it look better.
             val layoutParam = LinearLayout.LayoutParams(column.width + 20.dp, LinearLayout.LayoutParams.MATCH_PARENT)
             rowLayoutBinding.root.addView(tableCellView, layoutParam)
+
+            // Set double click listener to modify the value in TableCellView.
+            tableCellView.setOnDoubleClickListener {
+                assert(it is TableCellView)
+                val view = it as TableCellView
+                activity.showModifyValueDialog(view)
+            }
         }
         return ViewHolder(rowLayoutBinding.root)
     }

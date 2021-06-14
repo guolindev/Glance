@@ -22,4 +22,4 @@ package com.glance.guolindev.logic.model
  * @author guolin
  * @since 2020/9/12
  */
-data class Row(val lineNum: Int, val data: List<String>)
+data class Row(val lineNum: Int, val data: MutableList<String>)

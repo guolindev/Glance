@@ -40,6 +40,7 @@ import com.glance.guolindev.databinding.GlanceLibraryActivityDataBinding
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
+import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.view.TableCellView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -134,22 +135,27 @@ class DataActivity : AppCompatActivity() {
     /**
      * Show the dialog with existing value from db, and provide a editable way to change it.
      */
-    fun showModifyValueDialog(tableCellView: TableCellView) {
-        val dialog = AlertDialog.Builder(this).apply {
+    fun showModifyValueDialog(position: Int, row: Row, columnIndex: Int) {
+        if (!::adapter.isInitialized) return
+        require(columnIndex >= 0) {
+            "You're not editing a valid column with index -1."
+        }
+        editDialog = AlertDialog.Builder(this).apply {
             setView(R.layout.glance_library_dialog_edit_text)
             setPositiveButton(R.string.glance_library_apply) { _, _ ->
-                // TODO
+                applyValueModification(position, row, columnIndex)
             }
-            setNegativeButton(R.string.glance_library_cancel) { _, _ ->
-                // TODO
-            }
+            setNegativeButton(R.string.glance_library_cancel, null)
         }.create()
-        dialog.show()
-        val dialogEditText = dialog.findViewById<EditText>(R.id.dialog_edit_text)
-        assert(dialogEditText != null)
-        dialogEditText!!.setText(tableCellView.text)
-        dialogEditText.requestFocusFromTouch()
-        editDialog = dialog
+        editDialog?.let {
+            it.show()
+            val dialogEditText = it.findViewById<EditText>(R.id.dialog_edit_text)
+            require(dialogEditText != null) {
+                "dialogEditText shouldn't be null at this time."
+            }
+            dialogEditText.setText(row.data[columnIndex])
+            dialogEditText.requestFocusFromTouch()
+        }
     }
 
     /**
@@ -248,6 +254,20 @@ class DataActivity : AppCompatActivity() {
         tableCellView.typeface = Typeface.DEFAULT_BOLD
         tableCellView.text = column.name
         return tableCellView
+    }
+
+    /**
+     * Apply the value modification into database, then update the UI with new value.
+     */
+    private fun applyValueModification(position: Int, row: Row, columnIndex: Int) = editDialog?.let {
+        val dialogEditText = it.findViewById<EditText>(R.id.dialog_edit_text)
+        require(dialogEditText != null) {
+            "dialogEditText shouldn't be null at this time."
+        }
+        val newValue = dialogEditText.text.toString()
+        // TODO Apply it to database first, then update UI.
+        row.data[columnIndex] = newValue
+        adapter.notifyItemChanged(position)
     }
 
     companion object {

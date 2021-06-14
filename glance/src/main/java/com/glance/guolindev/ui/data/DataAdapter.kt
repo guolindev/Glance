@@ -56,6 +56,7 @@ class DataAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         if (!::context.isInitialized) context = parent.context
         val rowLayoutBinding = GlanceLibraryRowItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        val holder = ViewHolder(rowLayoutBinding.root)
         val param = rowLayoutBinding.root.layoutParams
         param.width = rowWidth
         for (column in columns) {
@@ -66,12 +67,14 @@ class DataAdapter(
 
             // Set double click listener to modify the value in TableCellView.
             tableCellView.setOnDoubleClickListener {
-                assert(it is TableCellView)
-                val view = it as TableCellView
-                activity.showModifyValueDialog(view)
+                val position = holder.bindingAdapterPosition
+                val row = getItem(position)
+                if (row != null && it is TableCellView) {
+                    activity.showModifyValueDialog(position, row, it.columnIndex)
+                }
             }
         }
-        return ViewHolder(rowLayoutBinding.root)
+        return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -18,7 +18,7 @@ import com.glance.guolindev.view.TableCellView
 fun TableCellView.setOnDoubleClickListener(listener: View.OnClickListener) {
     setOnClickListener {
         val clickTimeStamp = System.currentTimeMillis()
-        if (clickTimeStamp - firstClickTimeStamp <= 500) {
+        if (clickTimeStamp - firstClickTimeStamp <= 300) {
             // This triggers double click event.
             listener.onClick(this)
         } else {

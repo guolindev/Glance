@@ -22,7 +22,7 @@ package com.glance.guolindev.logic.model
  * @author guolin
  * @since 2020/9/12
  */
-data class Column(val name: String, val type: String) {
+data class Column(val name: String, val type: String, val isPrimaryKey: Boolean) {
 
     /**
      * The default width of column is 100.

@@ -21,6 +21,7 @@ import android.widget.TextView
 import com.glance.guolindev.Glance
 import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
+import com.glance.guolindev.logic.model.Data
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.Table
 import com.glance.guolindev.logic.typechange.*
@@ -94,7 +95,8 @@ class DBHelper {
                 do {
                     val columnName = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                     val columnType = cursor.getString(cursor.getColumnIndexOrThrow("type"))
-                    val column = Column(columnName, columnType)
+                    val primaryKey = cursor.getInt(cursor.getColumnIndexOrThrow("pk"))
+                    val column = Column(columnName, columnType, primaryKey == 1)
                     columnList.add(column)
                 } while (cursor.moveToNext())
             }
@@ -115,10 +117,10 @@ class DBHelper {
             if (cursor.moveToFirst()) {
                 var count = 1
                 do {
-                    val dataList = ArrayList<String>()
+                    val dataList = ArrayList<Data>()
                     for (column in columns) {
                         val columnIndex = cursor.getColumnIndexOrThrow(column.name)
-                        var fieldType: String? = null
+                        var fieldType = ""
                         for (rule in typeChangeRules) {
                             val type = rule.columnType2FieldType(column.type)
                             if (type != null) {
@@ -126,7 +128,7 @@ class DBHelper {
                                 break
                             }
                         }
-                        val data =  if (cursor.isNull(columnIndex)) {
+                        val value =  if (cursor.isNull(columnIndex)) {
                             "<NULL>"
                         } else {
                             when(fieldType) {
@@ -139,7 +141,7 @@ class DBHelper {
                                 else -> cursor.getString(columnIndex)
                             }
                         }
-                        dataList.add(data)
+                        dataList.add(Data(value, fieldType, column.isPrimaryKey))
                     }
                     val lineNum = offset + count // This is the line number of current row, starting by 1.
                     rowList.add(Row(lineNum, dataList))
@@ -165,9 +167,9 @@ class DBHelper {
         val rowList = loadDataInTable(db, table, 0, columns) // load page 0 data
         // we iterate the first page data and evaluate the proper width of each column.
         for (row in rowList) {
-            row.data.forEachIndexed { index, s ->
+            row.dataList.forEachIndexed { index, data ->
                 val column = columns[index]
-                var columnWidth = paint.measureText(s).toInt()
+                var columnWidth = paint.measureText(data.value).toInt()
                 columnWidth = min(columnWidth, maxColumnWidth)
                 columnWidth = max(columnWidth, minColumnWidth)
                 if (columnWidth > column.width) {

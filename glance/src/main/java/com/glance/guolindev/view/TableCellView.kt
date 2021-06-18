@@ -56,7 +56,9 @@ class TableCellView(context: Context, attrs: AttributeSet? = null) : AppCompatTe
         set(value) {
             field = value
             if (columnIndex != -1) { // This means we always need to set columnIndex before we set row.
-                text = value?.data?.get(columnIndex)
+                text = value?.let {
+                    it.dataList[columnIndex].value
+                } ?: ""
             }
         }
 

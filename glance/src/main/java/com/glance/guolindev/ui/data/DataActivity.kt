@@ -153,7 +153,7 @@ class DataActivity : AppCompatActivity() {
             require(dialogEditText != null) {
                 "dialogEditText shouldn't be null at this time."
             }
-            dialogEditText.setText(row.data[columnIndex])
+            dialogEditText.setText(row.dataList[columnIndex].value)
             dialogEditText.requestFocusFromTouch()
         }
     }
@@ -266,7 +266,7 @@ class DataActivity : AppCompatActivity() {
         }
         val newValue = dialogEditText.text.toString()
         // TODO Apply it to database first, then update UI.
-        row.data[columnIndex] = newValue
+        row.dataList[columnIndex].value = newValue
         adapter.notifyItemChanged(position)
     }
 

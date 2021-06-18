@@ -22,4 +22,6 @@ package com.glance.guolindev.logic.model
  * @author guolin
  * @since 2020/9/12
  */
-data class Row(val lineNum: Int, val data: MutableList<String>)
+data class Row(val lineNum: Int, val dataList: List<Data>)
+
+data class Data(var value: String, val type: String, val isPrimaryKey: Boolean)

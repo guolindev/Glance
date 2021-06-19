@@ -24,4 +24,4 @@ package com.glance.guolindev.logic.model
  */
 data class Row(val lineNum: Int, val dataList: List<Data>)
 
-data class Data(var value: String, val type: String, val isPrimaryKey: Boolean)
+data class Data(var value: String, val columnName: String, val columnType: String, val isPrimaryKey: Boolean)

@@ -16,6 +16,7 @@
 
 package com.glance.guolindev.logic.util
 
+import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.widget.TextView
 import com.glance.guolindev.Glance
@@ -141,7 +142,7 @@ class DBHelper {
                                 else -> cursor.getString(columnIndex)
                             }
                         }
-                        dataList.add(Data(value, fieldType, column.isPrimaryKey))
+                        dataList.add(Data(value, column.name, fieldType, column.isPrimaryKey))
                     }
                     val lineNum = offset + count // This is the line number of current row, starting by 1.
                     rowList.add(Row(lineNum, dataList))
@@ -150,6 +151,17 @@ class DBHelper {
             }
         }
         rowList
+    }
+
+    /**
+     * Update specific column data with specific row. Note that SQLite can not update value with
+     * row number, so this row must have a primary key to update.
+     */
+    suspend fun updateDataInTable(db: SQLiteDatabase, table: String, pkData: Data,
+                                  toUpdateData: Data, newValue: String) = withContext(Dispatchers.Default) {
+        val values = ContentValues()
+        values.put(toUpdateData.columnName, newValue)
+        db.update(table, values, "${pkData.columnName} = ?", arrayOf(pkData.value))
     }
 
     /**

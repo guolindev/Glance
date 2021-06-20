@@ -21,6 +21,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.glance.guolindev.logic.model.Column
+import com.glance.guolindev.logic.model.Data
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.util.DBHelper
 import com.glance.guolindev.logic.util.DBPagingSource
@@ -72,6 +73,17 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
     suspend fun closeDatabase() = withContext(Dispatchers.Default) {
         openedDatabase?.close()
         openedDatabase = null
+    }
+
+    /**
+     * Update specific column data with specific row. Note that SQLite can not update value with
+     * row number, so this row must have a primary key to update.
+     */
+    suspend fun updateDataInTable(table: String, pkData: Data,
+                                  toUpdateData: Data, newValue: String) = withContext(Dispatchers.Default) {
+        openedDatabase?.let { db ->
+            dbHelper.updateDataInTable(db, table, pkData, toUpdateData, newValue)
+        } ?: throw RuntimeException("Opened database is null.")
     }
 
     /**

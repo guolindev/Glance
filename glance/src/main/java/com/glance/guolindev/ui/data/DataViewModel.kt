@@ -21,10 +21,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.glance.guolindev.Glance
-import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
+import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.repository.DatabaseRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -38,16 +37,31 @@ import kotlinx.coroutines.launch
 class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
 
     /**
-     * The LiveData variable to observe db file list.
+     * The LiveData variable to observe get columns result.
      */
-    val columnsLiveData: LiveData<Resource<List<Column>>>
+    val columnsLiveData: LiveData<List<Column>>
         get() = _columnsLiveData
 
-    private val _columnsLiveData = MutableLiveData<Resource<List<Column>>>()
+    /**
+     * The LiveData variable to observe update data result.
+     */
+    val updateDataLiveData: LiveData<Resource<Any?>>
+        get() = _updateDataLiveData
+
+    /**
+     * The LiveData variable to observe exceptions happened in this ViewModel.
+     */
+    val errorLiveData: LiveData<Throwable>
+        get() = _errorLiveData
+
+    private val _columnsLiveData = MutableLiveData<List<Column>>()
+
+    private val _updateDataLiveData = MutableLiveData<Resource<Any?>>()
+
+    private val _errorLiveData = MutableLiveData<Throwable>()
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        _columnsLiveData.value = Resource.error(throwable.message
-                ?: Glance.context.getString(R.string.glance_library_uncaught_exception_happened))
+        _errorLiveData.value = throwable
     }
 
     /**
@@ -55,7 +69,19 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
      */
     fun getColumnsInTable(table: String) = viewModelScope.launch(handler) {
         val columns = repository.getColumnsInTable(table)
-        _columnsLiveData.value = Resource.success(columns)
+        _columnsLiveData.value = columns
+    }
+
+    /**
+     * Update data in a specific table.
+     */
+    fun updateDataInTable(table: String, row: Row) = viewModelScope.launch(handler) {
+        try {
+            // TODO update data in table
+            _updateDataLiveData.value = Resource.success(null)
+        } catch (e: Exception) {
+            _updateDataLiveData.value = Resource.error("Update failed: ${e.message}")
+        }
     }
 
     /**

@@ -35,6 +35,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.glance.guolindev.Glance
 import com.glance.guolindev.R
 import com.glance.guolindev.databinding.GlanceLibraryActivityDataBinding
 import com.glance.guolindev.extension.dp
@@ -97,16 +98,17 @@ class DataActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
 
+        viewModel.errorLiveData.observe(this) {
+            Toast.makeText(
+                this,
+                it?.message
+                    ?: Glance.context.getString(R.string.glance_library_uncaught_exception_happened),
+                Toast.LENGTH_SHORT
+            ).show()
+            binding.progressBar.visibility = View.INVISIBLE
+        }
         viewModel.columnsLiveData.observe(this) {
-            when (it.status) {
-                Resource.SUCCESS -> {
-                    initAdapter(table, it.data!!)
-                }
-                Resource.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                    binding.progressBar.visibility = View.INVISIBLE
-                }
-            }
+            initAdapter(table, it)
         }
         if (viewModel.columnsLiveData.value == null) {
             viewModel.getColumnsInTable(table)

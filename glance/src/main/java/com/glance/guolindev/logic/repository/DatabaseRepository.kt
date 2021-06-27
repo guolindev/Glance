@@ -32,7 +32,8 @@ import java.lang.RuntimeException
 
 /**
  * We set page size to 50 in pager layer. So we only load 50 items by each page.
- * And we only need to access to database only after a lot of pages, since the page in database is quite large.
+ * And we only need to access to database only after a lot of pages, since the page in database is
+ * quite large.
  */
 const val PAGE_SIZE = 50
 
@@ -76,13 +77,20 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
     }
 
     /**
-     * Update specific column data with specific row. Note that SQLite can not update value with
-     * row number, so this row must have a primary key to update.
+     * Update specific column data with specific row by primary key.
      */
-    suspend fun updateDataInTable(table: String, pkData: Data,
-                                  toUpdateData: Data, newValue: String) = withContext(Dispatchers.Default) {
+    suspend fun updateDataInTableByPrimaryKey(
+        table: String, primaryKey: Data,
+        updateColumnName: String, updateValue: String
+    ) = withContext(Dispatchers.Default) {
         openedDatabase?.let { db ->
-            dbHelper.updateDataInTable(db, table, pkData, toUpdateData, newValue)
+            dbHelper.updateDataInTableByPrimaryKey(
+                db,
+                table,
+                primaryKey,
+                updateColumnName,
+                updateValue
+            )
         } ?: throw RuntimeException("Opened database is null.")
     }
 
@@ -91,7 +99,9 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
      */
     fun getDataFromTableStream(table: String, columns: List<Column>): Flow<PagingData<Row>> {
         openedDatabase?.let { db ->
-            return Pager(config =  PagingConfig(PAGE_SIZE), pagingSourceFactory = { DBPagingSource(dbHelper, db, table, columns) }).flow
+            return Pager(
+                config = PagingConfig(PAGE_SIZE),
+                pagingSourceFactory = { DBPagingSource(dbHelper, db, table, columns) }).flow
         } ?: throw RuntimeException("Opened database is null.")
     }
 

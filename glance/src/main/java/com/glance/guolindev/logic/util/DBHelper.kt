@@ -154,14 +154,15 @@ class DBHelper {
     }
 
     /**
-     * Update specific column data with specific row. Note that SQLite can not update value with
-     * row number, so this row must have a primary key to update.
+     * Update specific column data with specific row by primary key.
      */
-    suspend fun updateDataInTable(db: SQLiteDatabase, table: String, pkData: Data,
-                                  toUpdateData: Data, newValue: String) = withContext(Dispatchers.Default) {
+    suspend fun updateDataInTableByPrimaryKey(
+        db: SQLiteDatabase, table: String, primaryKey: Data,
+        updateColumnName: String, updateValue: String
+    ) = withContext(Dispatchers.Default) {
         val values = ContentValues()
-        values.put(toUpdateData.columnName, newValue)
-        db.update(table, values, "${pkData.columnName} = ?", arrayOf(pkData.value))
+        values.put(updateColumnName, updateValue)
+        db.update(table, values, "${primaryKey.columnName} = ?", arrayOf(primaryKey.value))
     }
 
     /**

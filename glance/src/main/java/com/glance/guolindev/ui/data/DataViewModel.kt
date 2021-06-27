@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.glance.guolindev.logic.model.Column
+import com.glance.guolindev.logic.model.Data
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.repository.DatabaseRepository
@@ -73,12 +74,45 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
     }
 
     /**
-     * Update data in a specific table.
+     * Update data in a specific table by primary key.
      */
-    fun updateDataInTable(table: String, row: Row) = viewModelScope.launch(handler) {
+    fun updateDataInTableByPrimaryKey(
+        table: String, row: Row, updateColumnName: String,
+        updateValue: String) = viewModelScope.launch(handler) {
         try {
-            // TODO update data in table
-            _updateDataLiveData.value = Resource.success(null)
+            var primaryKey: Data? = null
+            var updateColumnValid = false
+            for (data in row.dataList) {
+                if (data.isPrimaryKey) {
+                    primaryKey = data
+                }
+                if (data.columnName == updateColumnName) {
+                    updateColumnValid = true
+                }
+                if (primaryKey != null && updateColumnValid) {
+                    break
+                }
+            }
+            if (primaryKey == null || !updateColumnValid) {
+                _updateDataLiveData.value = if (primaryKey == null) {
+                    Resource.error("Update failed: table $table doesn't have a primary key.")
+                } else {
+                    Resource.error("Update failed: $updateColumnName is an invalid column.")
+                }
+                return@launch
+            }
+            val affectedRows = repository.updateDataInTableByPrimaryKey(
+                table,
+                primaryKey,
+                updateColumnName,
+                updateValue
+            )
+            if (affectedRows == 1) {
+                _updateDataLiveData.value = Resource.success(null)
+            } else {
+                _updateDataLiveData.value =
+                    Resource.error("Update abnormal: affected rows are $affectedRows")
+            }
         } catch (e: Exception) {
             _updateDataLiveData.value = Resource.error("Update failed: ${e.message}")
         }

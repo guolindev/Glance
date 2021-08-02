@@ -158,10 +158,23 @@ class DBHelper {
      */
     suspend fun updateDataInTableByPrimaryKey(
         db: SQLiteDatabase, table: String, primaryKey: Data,
-        updateColumnName: String, updateValue: String
+        updateColumnName: String, updateColumnType: String, updateValue: String
     ) = withContext(Dispatchers.Default) {
         val values = ContentValues()
         values.put(updateColumnName, updateValue)
+        var fieldType = ""
+        for (rule in typeChangeRules) {
+            val type = rule.columnType2FieldType(updateColumnType)
+            if (type != null) {
+                fieldType = type
+                break
+            }
+        }
+        when(fieldType) {
+            INTEGER_FIELD_TYPE -> values.put(updateColumnName, updateValue.toInt())
+            REAL_FIELD_TYPE -> values.put(updateColumnName, updateValue.toDouble())
+            else -> values.put(updateColumnName, updateValue)
+        }
         db.update(table, values, "${primaryKey.columnName} = ?", arrayOf(primaryKey.value))
     }
 

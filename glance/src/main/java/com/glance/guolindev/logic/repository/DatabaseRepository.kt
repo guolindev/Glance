@@ -81,7 +81,7 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
      */
     suspend fun updateDataInTableByPrimaryKey(
         table: String, primaryKey: Data,
-        updateColumnName: String, updateValue: String
+        updateColumnName: String, updateColumnType: String, updateValue: String
     ) = withContext(Dispatchers.Default) {
         openedDatabase?.let { db ->
             dbHelper.updateDataInTableByPrimaryKey(
@@ -89,6 +89,7 @@ class DatabaseRepository(private val dbHelper: DBHelper) {
                 table,
                 primaryKey,
                 updateColumnName,
+                updateColumnType,
                 updateValue
             )
         } ?: throw RuntimeException("Opened database is null.")

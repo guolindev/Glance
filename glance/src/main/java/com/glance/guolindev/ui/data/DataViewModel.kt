@@ -77,7 +77,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
      * Update data in a specific table by primary key.
      */
     fun updateDataInTableByPrimaryKey(
-        table: String, row: Row, updateColumnName: String,
+        table: String, row: Row, updateColumnName: String, updateColumnType: String,
         updateValue: String) = viewModelScope.launch(handler) {
         try {
             var primaryKey: Data? = null
@@ -105,6 +105,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
                 table,
                 primaryKey,
                 updateColumnName,
+                updateColumnType,
                 updateValue
             )
             if (affectedRows == 1) {

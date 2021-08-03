@@ -21,10 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.glance.guolindev.logic.model.Column
-import com.glance.guolindev.logic.model.Data
-import com.glance.guolindev.logic.model.Resource
-import com.glance.guolindev.logic.model.Row
+import com.glance.guolindev.logic.model.*
 import com.glance.guolindev.logic.repository.DatabaseRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -46,7 +43,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
     /**
      * The LiveData variable to observe update data result.
      */
-    val updateDataLiveData: LiveData<Resource<Any?>>
+    val updateDataLiveData: LiveData<Resource<UpdateBean?>>
         get() = _updateDataLiveData
 
     /**
@@ -57,7 +54,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
 
     private val _columnsLiveData = MutableLiveData<List<Column>>()
 
-    private val _updateDataLiveData = MutableLiveData<Resource<Any?>>()
+    private val _updateDataLiveData = MutableLiveData<Resource<UpdateBean?>>()
 
     private val _errorLiveData = MutableLiveData<Throwable>()
 
@@ -74,12 +71,16 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
     }
 
     /**
-     * Update data in a specific table by primary key.
+     * Update data in a specific table by primary key. So there must be a primary key in table.
      */
-    fun updateDataInTableByPrimaryKey(
-        table: String, row: Row, updateColumnName: String, updateColumnType: String,
-        updateValue: String) = viewModelScope.launch(handler) {
+    fun updateDataInTable(updateBean: UpdateBean) = viewModelScope.launch {
         try {
+            val table = updateBean.table
+            val row = updateBean.row
+            val columnIndex = updateBean.columnIndex
+            val updateColumnName = row.dataList[columnIndex].columnName
+            val updateColumnType = row.dataList[columnIndex].columnType
+            val updateValue = updateBean.updateValue
             var primaryKey: Data? = null
             var updateColumnValid = false
             for (data in row.dataList) {
@@ -109,7 +110,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
                 updateValue
             )
             if (affectedRows == 1) {
-                _updateDataLiveData.value = Resource.success(null)
+                _updateDataLiveData.value = Resource.success(updateBean)
             } else {
                 _updateDataLiveData.value =
                     Resource.error("Update abnormal: affected rows are $affectedRows")

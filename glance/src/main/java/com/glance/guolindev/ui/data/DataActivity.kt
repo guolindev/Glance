@@ -42,6 +42,7 @@ import com.glance.guolindev.extension.dp
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Row
+import com.glance.guolindev.logic.model.UpdateBean
 import com.glance.guolindev.view.TableCellView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -70,6 +71,11 @@ class DataActivity : AppCompatActivity() {
     private lateinit var footerAdapter: DataFooterAdapter
 
     /**
+     * The table which need to show its data.
+     */
+    private lateinit var table: String
+
+    /**
      * Indicates the load is started or not.
      */
     private var loadStarted = false
@@ -83,12 +89,13 @@ class DataActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = GlanceLibraryActivityDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val table = intent.getStringExtra(TABLE_NAME)
-        if (table == null) {
+        val tableName = intent.getStringExtra(TABLE_NAME)
+        if (tableName == null) {
             Toast.makeText(this, R.string.glance_library_table_name_is_null, Toast.LENGTH_SHORT).show()
             finish()
             return
         }
+        table = tableName
 
         setSupportActionBar(binding.toolbar)
         val actionBar = supportActionBar
@@ -109,6 +116,19 @@ class DataActivity : AppCompatActivity() {
         }
         viewModel.columnsLiveData.observe(this) {
             initAdapter(table, it)
+        }
+        viewModel.updateDataLiveData.observe(this) {
+            when (it.status) {
+                Resource.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+                Resource.SUCCESS -> {
+                    val updateBean = it.data!!
+                    updateBean.row.dataList[updateBean.columnIndex].value = updateBean.updateValue
+                    adapter.notifyItemChanged(updateBean.position)
+                    Toast.makeText(this, "Update succeeded", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         if (viewModel.columnsLiveData.value == null) {
             viewModel.getColumnsInTable(table)
@@ -267,9 +287,7 @@ class DataActivity : AppCompatActivity() {
             "dialogEditText shouldn't be null at this time."
         }
         val newValue = dialogEditText.text.toString()
-        // TODO Apply it to database first, then update UI.
-        row.dataList[columnIndex].value = newValue
-        adapter.notifyItemChanged(position)
+        viewModel.updateDataInTable(UpdateBean(table, row, position, columnIndex, newValue))
     }
 
     companion object {

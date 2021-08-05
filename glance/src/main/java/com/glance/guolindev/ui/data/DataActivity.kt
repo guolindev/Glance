@@ -43,6 +43,7 @@ import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Resource
 import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.UpdateBean
+import com.glance.guolindev.logic.typechange.BLOB_FIELD_TYPE
 import com.glance.guolindev.view.TableCellView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -161,6 +162,11 @@ class DataActivity : AppCompatActivity() {
         if (!::adapter.isInitialized) return
         require(columnIndex >= 0) {
             "You're not editing a valid column with index -1."
+        }
+        val updateColumnType = row.dataList[columnIndex].columnType
+        if (updateColumnType == BLOB_FIELD_TYPE) {
+            Toast.makeText(this, "Blob column can not be modified by Glance", Toast.LENGTH_SHORT).show()
+            return
         }
         editDialog = AlertDialog.Builder(this).apply {
             setView(R.layout.glance_library_dialog_edit_text)

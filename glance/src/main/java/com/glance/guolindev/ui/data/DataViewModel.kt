@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.glance.guolindev.logic.model.*
 import com.glance.guolindev.logic.repository.DatabaseRepository
+import com.glance.guolindev.logic.typechange.BLOB_FIELD_TYPE
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
@@ -83,6 +84,10 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
             val updateValue = updateBean.updateValue
             var primaryKey: Data? = null
             var updateColumnValid = false
+            if (updateColumnType == BLOB_FIELD_TYPE) {
+                _updateDataLiveData.value = Resource.error("Blob column can not be modified by Glance")
+                return@launch
+            }
             for (data in row.dataList) {
                 if (data.isPrimaryKey) {
                     primaryKey = data

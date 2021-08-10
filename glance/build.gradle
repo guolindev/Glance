@@ -38,29 +38,21 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
 }
 
-apply plugin: 'com.github.panpf.bintray-publish'
-
-allprojects {
-    tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
-        options.addStringOption('encoding', 'UTF-8')
-    }
-}
-
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.17.0'
     }
 }
 
-publish {
-    userOrg = 'guolindev'
-    groupId = 'com.glance.guolindev'
-    artifactId = 'glance'
-    publishVersion = '1.0.0'
-    desc = 'A good helper for debugging Android database.'
-    website = 'https://github.com/guolindev/Glance'
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
+    }
 }
+
+apply plugin: "com.vanniktech.maven.publish"

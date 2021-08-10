@@ -15,3 +15,4 @@
 /.idea/
 
 releaseToBintray.txt
+gradle.properties

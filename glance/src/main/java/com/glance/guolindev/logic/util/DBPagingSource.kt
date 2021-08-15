@@ -18,6 +18,7 @@ package com.glance.guolindev.logic.util
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.glance.guolindev.logic.model.Column
 import com.glance.guolindev.logic.model.Row
 import java.lang.Exception
@@ -44,5 +45,7 @@ class DBPagingSource(private val dbHelper: DBHelper,
             LoadResult.Error(e)
         }
     }
+
+    override fun getRefreshKey(state: PagingState<Int, Row>): Int? = null
 
 }

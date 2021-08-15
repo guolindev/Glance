@@ -21,6 +21,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.glance.guolindev.Glance
+import com.glance.guolindev.R
 import com.glance.guolindev.logic.model.*
 import com.glance.guolindev.logic.repository.DatabaseRepository
 import com.glance.guolindev.logic.typechange.BLOB_FIELD_TYPE
@@ -85,7 +87,8 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
             var primaryKey: Data? = null
             var updateColumnValid = false
             if (updateColumnType == BLOB_FIELD_TYPE) {
-                _updateDataLiveData.value = Resource.error("Blob column can not be modified by Glance")
+                _updateDataLiveData.value =
+                    Resource.error(Glance.context.getString(R.string.glance_library_update_failed_blob_column_can_not_be_modified))
                 return@launch
             }
             for (data in row.dataList) {
@@ -101,9 +104,19 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
             }
             if (primaryKey == null || !updateColumnValid) {
                 _updateDataLiveData.value = if (primaryKey == null) {
-                    Resource.error("Update failed: table $table doesn't have a primary key.")
+                    Resource.error(
+                        String.format(
+                            Glance.context.getString(R.string.glance_library_update_failed_table_does_not_have_primary_key),
+                            table
+                        )
+                    )
                 } else {
-                    Resource.error("Update failed: $updateColumnName is an invalid column.")
+                    Resource.error(
+                        String.format(
+                            Glance.context.getString(R.string.glance_library_update_failed_update_column_name_is_invliad),
+                            table
+                        )
+                    )
                 }
                 return@launch
             }
@@ -118,10 +131,20 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
                 _updateDataLiveData.value = Resource.success(updateBean)
             } else {
                 _updateDataLiveData.value =
-                    Resource.error("Update abnormal: affected rows are $affectedRows")
+                    Resource.error(
+                        String.format(
+                            Glance.context.getString(R.string.glance_library_update_failed_update_column_name_is_invliad),
+                            affectedRows
+                        )
+                    )
             }
         } catch (e: Exception) {
-            _updateDataLiveData.value = Resource.error("Update failed: ${e.message}")
+            _updateDataLiveData.value = Resource.error(
+                String.format(
+                    Glance.context.getString(R.string.glance_library_update_failed),
+                    e.message
+                )
+            )
         }
     }
 

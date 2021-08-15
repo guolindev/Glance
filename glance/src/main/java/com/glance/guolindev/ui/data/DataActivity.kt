@@ -121,13 +121,13 @@ class DataActivity : AppCompatActivity() {
         viewModel.updateDataLiveData.observe(this) {
             when (it.status) {
                 Resource.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                 }
                 Resource.SUCCESS -> {
                     val updateBean = it.data!!
                     updateBean.row.dataList[updateBean.columnIndex].value = updateBean.updateValue
                     adapter.notifyItemChanged(updateBean.position)
-                    Toast.makeText(this, "Update succeeded", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.glance_library_update_succeeded, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -165,7 +165,7 @@ class DataActivity : AppCompatActivity() {
         }
         val updateColumnType = row.dataList[columnIndex].columnType
         if (updateColumnType == BLOB_FIELD_TYPE) {
-            Toast.makeText(this, "Blob column can not be modified by Glance", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.glance_library_blob_column_can_not_be_modified, Toast.LENGTH_SHORT).show()
             return
         }
         editDialog = AlertDialog.Builder(this).apply {

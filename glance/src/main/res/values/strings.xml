@@ -11,12 +11,17 @@
     <string name="glance_library_record_loaded">%1$s record in total</string>
     <string name="glance_library_records_loaded">%1$s records in total</string>
     <string name="glance_library_last_modified">Last modified %1$s</string>
-    <string name="glance_library_clipboard_content_copy_label">glance_library_clipboard_content_copy</string>
-    <string name="glance_library_content_copied_to_clipboard">Content copied to clipboard</string>
     <string name="glance_library_table_name_is_null">Table name is null</string>
     <string name="glance_library_this_file_does_not_exist_anymore">This file does not exist anymore</string>
     <string name="glance_library_this_is_not_a_valid_db_file">This is not a valid db file</string>
     <string name="glance_library_uncaught_exception_happened">Uncaught exception happened</string>
     <string name="glance_library_db_path_is_null">dbPath is null which is not a correct state</string>
+    <string name="glance_library_update_succeeded">Update succeeded</string>
+    <string name="glance_library_update_failed">Update failed: %1$s</string>
+    <string name="glance_library_update_failed_table_does_not_have_primary_key">Update failed: table %1$s doesn\'t have a primary key.</string>
+    <string name="glance_library_update_failed_update_column_name_is_invliad">Update failed: %1$s is an invalid column.</string>
+    <string name="glance_library_update_failed_blob_column_can_not_be_modified">Blob column can not be modified by Glance</string>
+    <string name="glance_library_update_failed_update_abnormal">Update abnormal: affected rows are %1$s</string>
     <string name="glance_library_something_is_wrong_when_loading_data">Something is wrong when loading data</string>
+    <string name="glance_library_blob_column_can_not_be_modified">Blob column can not be modified by Glance</string>
 </resources>

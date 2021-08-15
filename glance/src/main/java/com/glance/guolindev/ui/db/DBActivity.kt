@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.glance.guolindev.Glance
 import com.glance.guolindev.R
 import com.glance.guolindev.databinding.GlanceLibraryActivityDbBinding
 import com.glance.guolindev.logic.model.DBFile
@@ -42,6 +43,8 @@ class DBActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Use host app name to be the Glance launcher activity name in case of confusion when many apps integrate Glance.
+        title = Glance.context.applicationInfo.loadLabel(packageManager).toString()
         binding = GlanceLibraryActivityDbBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val dbList = ArrayList<DBFile>()

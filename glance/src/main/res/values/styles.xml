@@ -11,4 +11,8 @@
         <item name="colorAccent">@color/glance_library_progress_primary_reverse</item>
     </style>
 
+    <style name="GlanceLibraryDataActivityTheme" parent="GlanceLibraryActivityTheme">
+        <item name="colorControlActivated">@color/glance_library_edit_cursor</item>
+    </style>
+
 </resources>

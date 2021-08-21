@@ -10,13 +10,15 @@
             android:icon="@mipmap/glance_library_ic_launcher"
             android:roundIcon="@mipmap/glance_library_ic_launcher_round"
             android:taskAffinity="com.glance.guolindev.${applicationId}"
-            android:theme="@style/GlanceLibraryActivityTheme" />
+            android:theme="@style/GlanceLibraryActivityTheme"
+            android:exported="true"/>
 
         <activity-alias
             android:name="com.glance.guolindev.ui.db.DBActivityLauncher"
             android:icon="@mipmap/glance_library_ic_launcher"
             android:taskAffinity="com.glance.guolindev.${applicationId}"
-            android:targetActivity="com.glance.guolindev.ui.db.DBActivity">
+            android:targetActivity="com.glance.guolindev.ui.db.DBActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,12 +27,12 @@
 
         <activity
             android:name="com.glance.guolindev.ui.table.TableActivity"
-            android:exported="false"
-            android:theme="@style/GlanceLibraryActivityTheme" />
+            android:theme="@style/GlanceLibraryActivityTheme"
+            android:exported="false" />
 
         <activity android:name="com.glance.guolindev.ui.data.DataActivity"
-            android:exported="false"
-            android:theme="@style/GlanceLibraryActivityTheme" />
+            android:theme="@style/GlanceLibraryDataActivityTheme"
+            android:exported="false" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

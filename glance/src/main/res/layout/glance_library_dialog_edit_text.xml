@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.AppCompatEditText xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_edit_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:backgroundTint="@color/glance_library_edit_underline"
+    android:textColorHighlight="@color/glance_library_edit_highlight"
+    android:textCursorDrawable="@drawable/glance_library_edit_text_cursor"
     android:maxLines="8" />

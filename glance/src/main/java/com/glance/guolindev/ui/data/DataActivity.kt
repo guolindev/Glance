@@ -177,6 +177,10 @@ class DataActivity : AppCompatActivity() {
         }.create()
         editDialog?.let {
             it.show()
+            it.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(this, R.color.glance_library_positive_button))
+            it.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(this, R.color.glance_library_negative_button))
             val dialogEditText = it.findViewById<EditText>(R.id.dialog_edit_text)
             require(dialogEditText != null) {
                 "dialogEditText shouldn't be null at this time."

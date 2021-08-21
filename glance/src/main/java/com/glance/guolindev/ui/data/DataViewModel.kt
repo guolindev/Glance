@@ -83,6 +83,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
             val columnIndex = updateBean.columnIndex
             val updateColumnName = row.dataList[columnIndex].columnName
             val updateColumnType = row.dataList[columnIndex].columnType
+            val oldValue = row.dataList[columnIndex].value
             val updateValue = updateBean.updateValue
             var primaryKey: Data? = null
             var updateColumnValid = false
@@ -120,6 +121,11 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
                 }
                 return@launch
             }
+            if (oldValue == updateValue) {
+                _updateDataLiveData.value =
+                    Resource.error(Glance.context.getString(R.string.glance_library_data_not_changed))
+                return@launch
+            }
             val affectedRows = repository.updateDataInTableByPrimaryKey(
                 table,
                 primaryKey,
@@ -133,7 +139,7 @@ class DataViewModel(private val repository: DatabaseRepository) : ViewModel() {
                 _updateDataLiveData.value =
                     Resource.error(
                         String.format(
-                            Glance.context.getString(R.string.glance_library_update_failed_update_column_name_is_invliad),
+                            Glance.context.getString(R.string.glance_library_update_failed_update_abnormal),
                             affectedRows
                         )
                     )

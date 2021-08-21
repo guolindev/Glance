@@ -16,6 +16,7 @@
     <string name="glance_library_this_is_not_a_valid_db_file">This is not a valid db file</string>
     <string name="glance_library_uncaught_exception_happened">Uncaught exception happened</string>
     <string name="glance_library_db_path_is_null">dbPath is null which is not a correct state</string>
+    <string name="glance_library_data_not_changed">Data not changed</string>
     <string name="glance_library_update_succeeded">Update succeeded</string>
     <string name="glance_library_update_failed">Update failed: %1$s</string>
     <string name="glance_library_update_failed_table_does_not_have_primary_key">Update failed: table %1$s doesn\'t have a primary key.</string>

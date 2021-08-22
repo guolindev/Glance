@@ -16,5 +16,10 @@
     <color name="glance_library_table_text">#F8F9F9</color>
     <color name="glance_library_progress_primary">#F8F9F9</color>
     <color name="glance_library_progress_primary_reverse">#F8F9F9</color>
+    <color name="glance_library_positive_button">#F8F9F9</color>
+    <color name="glance_library_negative_button">#9E9E9F</color>
+    <color name="glance_library_edit_underline">#DDDDDD</color>
+    <color name="glance_library_edit_cursor">#F8F9F9</color>
+    <color name="glance_library_edit_highlight">#55F8F9F9</color>
 
 </resources>

@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -47,11 +46,7 @@ import com.glance.guolindev.logic.model.Row
 import com.glance.guolindev.logic.model.UpdateBean
 import com.glance.guolindev.logic.typechange.BLOB_FIELD_TYPE
 import com.glance.guolindev.view.TableCellView
-import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.internal.ChannelFlow
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 

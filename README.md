@@ -9,9 +9,13 @@ Glance provides a clean UI interface to display all the data in the database, an
 You can experience it right now with below dependency.
 
 ```groovy
+repositories {
+  google()
+  mavenCentral()
+}
+
 dependencies {
-    // debugImplementation because Glance should only run in debug builds.
-    debugImplementation 'com.glance.guolindev:glance:1.0.0'
+    debugImplementation 'com.guolindev.glance:glance:1.1.0'
 }
 ```
 

@@ -21,6 +21,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -86,6 +87,11 @@ class DataActivity : AppCompatActivity() {
      */
     private var editDialog: AlertDialog? = null
 
+    /**
+     * Prevent refreshing data frequently
+     */
+    private var loadCompletableState = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = GlanceLibraryActivityDataBinding.inflate(layoutInflater)
@@ -116,6 +122,7 @@ class DataActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.INVISIBLE
         }
         viewModel.columnsLiveData.observe(this) {
+            loadCompletableState = true
             initAdapter(table, it)
         }
         viewModel.updateDataLiveData.observe(this) {
@@ -134,12 +141,25 @@ class DataActivity : AppCompatActivity() {
         if (viewModel.columnsLiveData.value == null) {
             viewModel.getColumnsInTable(table)
         }
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.glance_menu_item, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()
+                return true
+            }
+            R.id.action_refresh -> {
+                if(loadCompletableState){
+                    loadCompletableState = loadCompletableState.not()
+                    viewModel.getColumnsInTable(table)
+                }
                 return true
             }
         }
@@ -215,6 +235,7 @@ class DataActivity : AppCompatActivity() {
                 adapter.addLoadStateListener { loadState ->
                     when (loadState.refresh) {
                         is LoadState.NotLoading -> {
+                            binding.recyclerView.scrollToPosition(0)
                             binding.horizontalScroller.visibility = View.VISIBLE
                             binding.progressBar.visibility = View.INVISIBLE
                             if (loadStarted) {
@@ -264,6 +285,7 @@ class DataActivity : AppCompatActivity() {
      * Build a TableRowLayout as a row to show the columns of a table as title.
      */
     private fun buildTableTitle(columns: List<Column>, rowWidth: Int) {
+        binding.rowTitleLayout.removeAllViews()
         val param = binding.rowTitleLayout.layoutParams
         param.width = rowWidth
         columns.forEachIndexed { index, column ->
